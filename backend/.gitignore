@@ -1,0 +1,30 @@
+# Entorno virtual — nunca se sube
+venv/
+env/
+.venv/
+
+# Variables de entorno — contiene tu API key, NUNCA al repositorio
+.env
+
+# PDFs generados — son outputs temporales
+outputs/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Archivos temporales de diagnóstico
+test_models.py
+
+# VS Code
+.vscode/
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Logs
+*.logss
