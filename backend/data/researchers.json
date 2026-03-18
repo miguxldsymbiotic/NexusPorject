@@ -111,6 +111,20 @@
       "idiomas": ["español", "inglés", "francés"],
       "disponibilidad": "tiempo_completo",
       "email": "repardo@uexternado.edu.co"
+    },
+    {
+      "id": "INV009",
+      "nombre": "Ing. Daniel Mateo Solarte",
+      "titulo": "Especialista en IA y Cloud Computing",
+      "institucion": "Google Cloud Partner Network",
+      "departamento": "Arquitectura de Soluciones AI",
+      "areas_expertise": ["google cloud platform", "vertex ai", "gemini api", "arquitecturas escalables", "transformación digital"],
+      "experiencia_convocatorias": ["BID", "MINCIENCIAS", "GOOGLE.ORG", "VC FUND"],
+      "proyectos_anteriores": 22,
+      "publicaciones_indexadas": 5,
+      "idiomas": ["español", "inglés"],
+      "disponibilidad": "tiempo_completo",
+      "email": "dsolarte@nexus-google.com"
     }
   ]
 }

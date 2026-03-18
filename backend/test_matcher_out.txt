@@ -1,0 +1,27 @@
+﻿PROBANDO LËGICA DE MATCHING DE DEMANDAS...
+[Matcher] Evaluando compatibilidad con: Convocatoria MinCiencias: Salud Rural y Telemedicina...
+[Nexus] Consultando a OpenRouter (google/gemini-2.0-flash-001)...
+[Matcher] Evaluando compatibilidad con: Global Grant: Sostenibilidad y ODS 2030...
+[Nexus] Consultando a OpenRouter (google/gemini-2.0-flash-001)...
+[Matcher] Evaluando compatibilidad con: LATAM Tech Innovators - Seed Fund...
+[Nexus] Consultando a OpenRouter (google/gemini-2.0-flash-001)...
+
+Se encontraron 3 matches:
+
+--- Convocatoria MinCiencias: Salud Rural y Telemedicina ---
+Score: 90%
+Justificaci¾n: El proyecto se alinea fuertemente con la convocatoria. Cumple con los requisitos clave de uso de tecnologÝa para mejorar el acceso a la salud en zonas rurales y demuestra un impacto social medible y sostenibilidad. El proyecto aborda directamente la telemedicina en el Amazonas, que califica como zona rural dispersa en Colombia.
+Brechas: 
+Recomendaciones: Asegurar que la propuesta enfatice el uso de tecnologÝas como IoT o telemetrÝa, si es aplicable, para aumentar la puntuaci¾n., Cuantificar el impacto social esperado (ej: n·mero de vidas salvadas, reducci¾n en porcentaje de la mortalidad infantil) para fortalecer la propuesta., Detallar el modelo de suscripci¾n bßsico y las alianzas con gobiernos locales para demostrar una sostenibilidad financiera robusta.
+
+--- Global Grant: Sostenibilidad y ODS 2030 ---
+Score: 85%
+Justificaci¾n: El proyecto se alinea fuertemente con los ODS relacionados con salud y reducci¾n de desigualdades, y utiliza tecnologÝa para un impacto social significativo. La sostenibilidad a travÚs de alianzas y suscripciones es un punto fuerte. Sin embargo, necesita explicitar el marco te¾rico y el anßlisis de riesgos ambientales.
+Brechas: Marco te¾rico s¾lido, Anßlisis de riesgos ambientales
+Recomendaciones: Identificar y explicitar los ODS especÝficos a los que contribuye el proyecto (ej. ODS 3, ODS 10)., Desarrollar un marco te¾rico que sustente la intervenci¾n, citando estudios y evidencias sobre telemedicina en ßreas remotas., Realizar un anßlisis de riesgos ambientales, considerando el impacto de la tecnologÝa (ej. residuos electr¾nicos, consumo energÚtico) y las medidas de mitigaci¾n., Detallar el presupuesto del proyecto, incluyendo costos de desarrollo, operaci¾n y mantenimiento de la app y la infraestructura tecnol¾gica.
+
+--- LATAM Tech Innovators - Seed Fund ---
+Score: 85%
+Justificaci¾n: El proyecto se alinea bien con la demanda, especialmente en innovaci¾n tecnol¾gica y potencial de impacto en LatinoamÚrica. La metodologÝa basada en tecnologÝa (tablets y conexi¾n satelital) es un punto fuerte. Sin embargo, la informaci¾n proporcionada no detalla la escalabilidad del modelo de negocio ni la fortaleza del equipo tÚcnico, lo que reduce ligeramente el score.
+Brechas: Escalabilidad, Equipo tÚcnico fuerte, Modelo de negocio claro
+Recomendaciones: Detallar el plan de escalabilidad del modelo de negocio, incluyendo proyecciones de crecimiento y estrategias para llegar a mßs comunidades., Proporcionar informaci¾n sobre el equipo tÚcnico, destacando su experiencia y habilidades relevantes para el desarrollo y mantenimiento de la app., Clarificar el modelo de negocio, especificando c¾mo se generarßn ingresos mßs allß de la suscripci¾n bßsica y c¾mo se asegura la sostenibilidad a largo plazo.

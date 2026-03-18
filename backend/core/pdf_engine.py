@@ -22,10 +22,11 @@ C_TEXTO_SUAVE   = HexColor('#4b5563')   # Gris oscuro
 C_LINEA         = HexColor('#e5e7eb')   # Gris muy claro
 C_FONDO_TABLA   = HexColor('#f8fafc')   # Blanco azulado
 C_FONDO_HEADER  = HexColor('#eef2f7')   # Azul muy claro
-C_VERDE         = HexColor('#065f46')
+C_VERDE         = HexColor('#059669')   # Verde esmeralda
 C_VERDE_FONDO   = HexColor('#ecfdf5')
 C_NARANJA_FONDO = HexColor('#fff7ed')
 C_NARANJA_BORDE = HexColor('#fed7aa')
+C_ROJO          = HexColor('#dc2626')   # Rojo para brechas
 C_CRITICO       = HexColor('#b45309')
 
 PAGE_W, PAGE_H = A4
@@ -48,7 +49,7 @@ def fecha_es():
     return ahora.strftime(f'%d de {mes} de %Y')
 
 
-# ── Flowable personalizado: barra lateral de sección ──────────────
+# ── Flowables personalizados ──────────────────────────────────────
 class SeccionHeader(Flowable):
     """Encabezado de sección con barra de color lateral izquierda."""
     def __init__(self, numero, titulo, ancho=CONTENT_W):
@@ -60,17 +61,13 @@ class SeccionHeader(Flowable):
 
     def draw(self):
         c = self.canv
-        # Fondo completo
         c.setFillColor(C_FONDO_HEADER)
         c.roundRect(0, 0, self.ancho, self.altura, 4, fill=1, stroke=0)
-        # Barra lateral izquierda
         c.setFillColor(C_ACENTO)
         c.rect(0, 0, 4, self.altura, fill=1, stroke=0)
-        # Número de sección
         c.setFillColor(C_ACENTO)
         c.setFont('Helvetica-Bold', 9)
         c.drawString(10, self.altura / 2 - 3, self.numero)
-        # Título
         c.setFillColor(C_PRIMARIO)
         c.setFont('Helvetica-Bold', 12)
         c.drawString(32, self.altura / 2 - 4, self.titulo.upper())
@@ -78,222 +75,107 @@ class SeccionHeader(Flowable):
     def wrap(self, *args):
         return (self.ancho, self.altura + 6)
 
-
-class LineaDivisoria(Flowable):
-    """Línea horizontal decorativa."""
-    def __init__(self, ancho=CONTENT_W, color=C_LINEA, grosor=0.5):
+class BarraProgreso(Flowable):
+    """Barra de progreso visual para el matching score."""
+    def __init__(self, porcentaje, ancho=CONTENT_W, alto=18, color=C_VERDE):
         Flowable.__init__(self)
-        self.ancho  = ancho
-        self.color  = color
-        self.grosor = grosor
+        self.porcentaje = min(100, max(0, porcentaje))
+        self.ancho = ancho
+        self.alto = alto
+        self.color = color
 
     def draw(self):
-        self.canv.setStrokeColor(self.color)
-        self.canv.setLineWidth(self.grosor)
-        self.canv.line(0, 0, self.ancho, 0)
+        c = self.canv
+        c.setFillColor(C_LINEA)
+        c.roundRect(0, 0, self.ancho, self.alto, self.alto/2, fill=1, stroke=0)
+        c.setFillColor(self.color)
+        c.roundRect(0, 0, (self.ancho * self.porcentaje) / 100.0, self.alto, self.alto/2, fill=1, stroke=0)
+        c.setFillColor(white)
+        c.setFont('Helvetica-Bold', 10)
+        c.drawCentredString(self.ancho/2, self.alto/2 - 3, f"{self.porcentaje}% COMPATIBILIDAD CON REQUISITOS")
 
     def wrap(self, *args):
-        return (self.ancho, self.grosor + 2)
+        return (self.ancho, self.alto + 5)
 
+# ── Estilos de página ─────────────────────────────────────────────
+LOGO_PATH = os.path.join(os.path.dirname(__file__), '..', 'static', 'logo_nexus.png')
 
-# ── Numeración de páginas ─────────────────────────────────────────
-def agregar_pie_pagina(canvas, doc, formato_nombre, fecha):
+def on_primera_pagina(canvas, doc):
     canvas.saveState()
-    # Línea superior del pie
+    canvas.setFillColor(HexColor('#f1f5f9'))
+    canvas.circle(PAGE_W, PAGE_H, 4.5*cm, fill=1, stroke=0)
+    if os.path.exists(LOGO_PATH):
+        from reportlab.lib.utils import ImageReader
+        try:
+            img = ImageReader(LOGO_PATH)
+            canvas.drawImage(img, MARGIN_L, PAGE_H - 2.5*cm, width=1.5*cm, height=1.5*cm, mask='auto')
+        except: pass
+    canvas.setFont('Helvetica-Bold', 10)
+    canvas.setFillColor(C_PRIMARIO)
+    canvas.drawString(MARGIN_L + 1.8*cm, PAGE_H - 2*cm, "PROJECT NEXUS / SYMBIOTIC")
+    canvas.setFont('Helvetica', 8)
+    canvas.setFillColor(C_TEXTO_SUAVE)
+    canvas.drawString(MARGIN_L + 1.8*cm, PAGE_H - 2.4*cm, "Motor de Inteligencia para Propuestas Académicas")
+    agregar_pie_pagina(canvas, doc, doc.formato_nombre, doc.fecha_str)
+    canvas.restoreState()
+
+def on_paginas_siguientes(canvas, doc):
+    canvas.saveState()
+    canvas.setStrokeColor(C_LINEA)
+    canvas.setLineWidth(0.5)
+    canvas.line(MARGIN_L, PAGE_H - 1.5*cm, PAGE_W - MARGIN_R, PAGE_H - 1.5*cm)
+    canvas.setFont('Helvetica-Bold', 7)
+    canvas.setFillColor(C_TEXTO_SUAVE)
+    canvas.drawString(MARGIN_L, PAGE_H - 1.35*cm, "NEXUS · Propuesta Técnica")
+    agregar_pie_pagina(canvas, doc, doc.formato_nombre, doc.fecha_str)
+    canvas.restoreState()
+
+def agregar_pie_pagina(canvas, doc, formato_nombre, fecha):
     canvas.setStrokeColor(C_LINEA)
     canvas.setLineWidth(0.5)
     canvas.line(MARGIN_L, MARGIN_B - 2*mm, PAGE_W - MARGIN_R, MARGIN_B - 2*mm)
-    # Texto izquierdo
-    canvas.setFont('Helvetica', 7.5)
+    canvas.setFont('Helvetica', 7)
     canvas.setFillColor(C_TEXTO_SUAVE)
-    canvas.drawString(MARGIN_L, MARGIN_B - 6*mm, f'Project Nexus · {formato_nombre}')
-    # Fecha centro
+    canvas.drawString(MARGIN_L, MARGIN_B - 6*mm, f'Symbiotic Nexus · {formato_nombre}')
     canvas.drawCentredString(PAGE_W / 2, MARGIN_B - 6*mm, fecha)
-    # Número de página derecha
-    canvas.drawRightString(PAGE_W - MARGIN_R, MARGIN_B - 6*mm, f'Página {doc.page}')
-    canvas.restoreState()
-
+    canvas.drawRightString(PAGE_W - MARGIN_R, MARGIN_B - 6*mm, f'Pág. {doc.page}')
 
 # ── Estilos tipográficos ──────────────────────────────────────────
 def estilos():
     return {
-        'titulo_portada': ParagraphStyle(
-            'titulo_portada',
-            fontName='Helvetica-Bold', fontSize=22,
-            textColor=white, alignment=TA_LEFT,
-            spaceAfter=6, leading=28,
-        ),
-        'subtitulo_portada': ParagraphStyle(
-            'subtitulo_portada',
-            fontName='Helvetica', fontSize=11,
-            textColor=HexColor('#93c5fd'), alignment=TA_LEFT,
-            spaceAfter=4, leading=16,
-        ),
-        'etiqueta_portada': ParagraphStyle(
-            'etiqueta_portada',
-            fontName='Helvetica-Bold', fontSize=8,
-            textColor=HexColor('#93c5fd'), alignment=TA_LEFT,
-            spaceBefore=10, spaceAfter=2,
-        ),
-        'valor_portada': ParagraphStyle(
-            'valor_portada',
-            fontName='Helvetica', fontSize=10,
-            textColor=white, alignment=TA_LEFT,
-            spaceAfter=6, leading=14,
-        ),
-        'subseccion': ParagraphStyle(
-            'subseccion',
-            fontName='Helvetica-Bold', fontSize=11,
-            textColor=C_PRIMARIO, spaceBefore=14,
-            spaceAfter=4, leading=15,
-        ),
-        'cuerpo': ParagraphStyle(
-            'cuerpo',
-            fontName='Helvetica', fontSize=10,
-            textColor=C_TEXTO, alignment=TA_JUSTIFY,
-            spaceAfter=5, leading=15,
-        ),
-        'cuerpo_tabla': ParagraphStyle(
-            'cuerpo_tabla',
-            fontName='Helvetica', fontSize=9,
-            textColor=C_TEXTO, leading=13,
-        ),
-        'header_tabla': ParagraphStyle(
-            'header_tabla',
-            fontName='Helvetica-Bold', fontSize=9,
-            textColor=white, leading=13,
-        ),
-        'etiqueta': ParagraphStyle(
-            'etiqueta',
-            fontName='Helvetica-Bold', fontSize=9,
-            textColor=C_PRIMARIO, leading=13,
-        ),
-        'nota': ParagraphStyle(
-            'nota',
-            fontName='Helvetica-Oblique', fontSize=8,
-            textColor=C_TEXTO_SUAVE, leading=11,
-        ),
-        'campo_critico': ParagraphStyle(
-            'campo_critico',
-            fontName='Helvetica-Bold', fontSize=9,
-            textColor=C_CRITICO, leading=13,
-        ),
-        'idea_texto': ParagraphStyle(
-            'idea_texto',
-            fontName='Helvetica-Oblique', fontSize=10,
-            textColor=C_VERDE, alignment=TA_JUSTIFY,
-            leading=15,
-        ),
+        'subseccion': ParagraphStyle('subseccion', fontName='Helvetica-Bold', fontSize=11, textColor=C_PRIMARIO, spaceBefore=14, spaceAfter=4, leading=15),
+        'cuerpo': ParagraphStyle('cuerpo', fontName='Helvetica', fontSize=10, textColor=C_TEXTO, alignment=TA_JUSTIFY, spaceAfter=5, leading=15),
+        'cuerpo_tabla': ParagraphStyle('cuerpo_tabla', fontName='Helvetica', fontSize=9, textColor=C_TEXTO, leading=13),
+        'header_tabla': ParagraphStyle('header_tabla', fontName='Helvetica-Bold', fontSize=9, textColor=white, leading=13),
+        'etiqueta': ParagraphStyle('etiqueta', fontName='Helvetica-Bold', fontSize=9, textColor=C_PRIMARIO, leading=13),
+        'campo_critico': ParagraphStyle('campo_critico', fontName='Helvetica-Bold', fontSize=9, textColor=C_CRITICO, leading=13),
     }
 
-
-# ── Portada de página completa ────────────────────────────────────
-def dibujar_portada(canvas, datos):
-    """Dibuja la portada directamente sobre el canvas (página completa)."""
-    canvas.saveState()
-
-    # Fondo azul marino completo
-    canvas.setFillColor(C_PRIMARIO)
-    canvas.rect(0, 0, PAGE_W, PAGE_H, fill=1, stroke=0)
-
-    # Franja de acento en la parte superior
-    canvas.setFillColor(C_ACENTO)
-    canvas.rect(0, PAGE_H - 8*mm, PAGE_W, 8*mm, fill=1, stroke=0)
-
-    # Franja inferior
-    canvas.setFillColor(C_SECUNDARIO)
-    canvas.rect(0, 0, PAGE_W, 3*cm, fill=1, stroke=0)
-
-    # Línea decorativa vertical izquierda
-    canvas.setFillColor(C_ACENTO)
-    canvas.rect(MARGIN_L - 5, 3*cm, 3, PAGE_H - 3*cm - 8*mm, fill=1, stroke=0)
-
-    # Logo / Marca
-    canvas.setFont('Helvetica-Bold', 10)
-    canvas.setFillColor(C_ACENTO)
-    canvas.drawString(MARGIN_L + 6, PAGE_H - 7*mm + 1, 'PROJECT NEXUS')
-
-    # Título principal
-    canvas.setFont('Helvetica-Bold', 28)
-    canvas.setFillColor(white)
-    canvas.drawString(MARGIN_L + 6, PAGE_H * 0.72, datos.get('formato_nombre', 'Documento Técnico'))
-
-    # Subtítulo
-    canvas.setFont('Helvetica', 14)
-    canvas.setFillColor(HexColor('#93c5fd'))
-    canvas.drawString(MARGIN_L + 6, PAGE_H * 0.72 - 22, 'Propuesta técnica preliminar · Project Nexus')
-
-    # Línea separadora
-    canvas.setStrokeColor(C_ACENTO)
-    canvas.setLineWidth(1)
-    canvas.line(MARGIN_L + 6, PAGE_H * 0.68, PAGE_W - MARGIN_R, PAGE_H * 0.68)
-
-    # Metadatos en la portada
-    y = PAGE_H * 0.62
-    meta = [
-        ('METODOLOGÍA', datos.get('metodologia', '')),
-        ('ESTADO', 'Borrador técnico preliminar'),
-        ('GENERADO POR', 'Project Nexus v0.5.0'),
-        ('FECHA', fecha_es()),
+# ── Tablas y Cajas ────────────────────────────────────────────────
+def hacer_ficha_tecnica(datos, est):
+    def fila(label, valor):
+        return [Paragraph(f"<b>{label}:</b>", est['cuerpo_tabla']), Paragraph(str(valor or 'N/A'), est['cuerpo_tabla'])]
+    filas = [
+        fila('Investigador Principal', datos.get('investigador')),
+        fila('ID / CVLAC', datos.get('id_investigador')),
+        fila('Unidad / Facultad', datos.get('facultad')),
+        fila('Grupo de Investigación', datos.get('grupo')),
+        fila('Sector Temático', datos.get('sector_tematico')),
     ]
-    for etiqueta, valor in meta:
-        canvas.setFont('Helvetica-Bold', 7.5)
-        canvas.setFillColor(HexColor('#93c5fd'))
-        canvas.drawString(MARGIN_L + 6, y, etiqueta)
-        canvas.setFont('Helvetica', 10)
-        canvas.setFillColor(white)
-        canvas.drawString(MARGIN_L + 6, y - 13, valor)
-        y -= 32
+    t = Table(filas, colWidths=[6*cm, 10.6*cm])
+    t.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 0.5, C_LINEA),
+        ('ROWBACKGROUNDS', (0, 0), (-1, -1), [C_FONDO_TABLA, white]),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('TOPPADDING', (0, 0), (-1, -1), 5), ('BOTTOMPADDING', (0, 0), (-1, -1), 5), ('LEFTPADDING', (0, 0), (-1, -1), 10),
+    ]))
+    return t
 
-    # Caja de idea semilla
-    idea = datos.get('idea_original', '')
-    idea_y = 3*cm + 10*mm
-    canvas.setFillColor(HexColor('#1e3f6e'))
-    canvas.roundRect(MARGIN_L, idea_y - 5*mm,
-                     PAGE_W - MARGIN_L - MARGIN_R, 4.5*cm, 6, fill=1, stroke=0)
-    canvas.setFont('Helvetica-Bold', 8)
-    canvas.setFillColor(C_ACENTO)
-    canvas.drawString(MARGIN_L + 8, idea_y + 3.2*cm, 'IDEA SEMILLA')
-    # Texto de la idea (truncado si es muy largo)
-    canvas.setFont('Helvetica-Oblique', 9.5)
-    canvas.setFillColor(HexColor('#dbeafe'))
-    # Dividimos la idea en líneas manualmente
-    palabras = idea.split()
-    lineas, linea_actual = [], ''
-    for palabra in palabras:
-        prueba = linea_actual + ' ' + palabra if linea_actual else palabra
-        if len(prueba) * 5.5 < (PAGE_W - MARGIN_L - MARGIN_R - 20):
-            linea_actual = prueba
-        else:
-            lineas.append(linea_actual)
-            linea_actual = palabra
-    if linea_actual:
-        lineas.append(linea_actual)
-    for i, linea in enumerate(lineas[:4]):
-        canvas.drawString(MARGIN_L + 8, idea_y + 2.4*cm - i * 14, linea)
-
-    # Pie de portada
-    canvas.setFont('Helvetica', 8)
-    canvas.setFillColor(HexColor('#93c5fd'))
-    canvas.drawCentredString(PAGE_W / 2, 1.2*cm,
-        'Documento generado automáticamente · No constituye propuesta oficial radicada')
-
-    canvas.restoreState()
-
-
-# ── Tablas ────────────────────────────────────────────────────────
 def hacer_tabla_equipo(equipo, est):
-    encabezados = [
-        Paragraph('Investigador', est['header_tabla']),
-        Paragraph('Rol', est['header_tabla']),
-        Paragraph('Institución', est['header_tabla']),
-        Paragraph('%', est['header_tabla']),
-        Paragraph('Justificación', est['header_tabla']),
-    ]
+    encabezados = [Paragraph(h, est['header_tabla']) for h in ['Investigador', 'Rol', 'Institución', '%', 'Justificación']]
     filas = [encabezados]
     for i, m in enumerate(equipo):
         p = m.get('perfil_completo', {})
-        bg = C_FONDO_TABLA if i % 2 == 0 else white
         filas.append([
             Paragraph(p.get('nombre', ''), est['cuerpo_tabla']),
             Paragraph(m.get('rol', ''), est['cuerpo_tabla']),
@@ -301,218 +183,207 @@ def hacer_tabla_equipo(equipo, est):
             Paragraph(f"{m.get('dedicacion_porcentaje', 0)}%", est['cuerpo_tabla']),
             Paragraph(m.get('justificacion', ''), est['cuerpo_tabla']),
         ])
-    t = Table(filas, colWidths=[3.8*cm, 2.6*cm, 3.2*cm, 1.2*cm, 5.8*cm])
+    t = Table(filas, colWidths=[3.2*cm, 2.4*cm, 2.8*cm, 1.2*cm, 7.0*cm])
     t.setStyle(TableStyle([
-        ('BACKGROUND',    (0, 0), (-1, 0),  C_PRIMARIO),
-        ('ROWBACKGROUNDS',(0, 1), (-1, -1), [C_FONDO_TABLA, white]),
-        ('GRID',          (0, 0), (-1, -1), 0.25, C_LINEA),
-        ('LINEBELOW',     (0, 0), (-1, 0),  1.5, C_ACENTO),
-        ('TOPPADDING',    (0, 0), (-1, -1), 6),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
-        ('LEFTPADDING',   (0, 0), (-1, -1), 7),
-        ('RIGHTPADDING',  (0, 0), (-1, -1), 7),
-        ('VALIGN',        (0, 0), (-1, -1), 'TOP'),
+        ('BACKGROUND', (0, 0), (-1, 0), C_FONDO_HEADER),
+        ('TEXTCOLOR', (0, 0), (-1, 0), C_PRIMARIO),
+        ('FONTSIZE', (0, 0), (-1, -1), 8),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [C_FONDO_TABLA, white]),
+        ('GRID', (0, 0), (-1, -1), 0.25, C_LINEA),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('TOPPADDING', (0, 0), (-1, -1), 4), ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
     ]))
     return t
 
-
-def hacer_tabla_campos(campos_obligatorios, campos_criticos, est):
-    encabezados = [
-        Paragraph('Campo requerido', est['header_tabla']),
-        Paragraph('Clasificacion', est['header_tabla']),
-    ]
-    filas = [encabezados]
-    for campo in campos_obligatorios:
-        es_critico = campo in campos_criticos
-        nombre = campo.replace('_', ' ').title()
-        tipo_p = Paragraph(
-            '(!) Critico' if es_critico else 'Estandar',
-            est['campo_critico'] if es_critico else est['cuerpo_tabla']
-        )
-        filas.append([Paragraph(nombre, est['cuerpo_tabla']), tipo_p])
+def hacer_tabla_campos(campos_ob, campos_crit, est):
+    filas = [[Paragraph(h, est['header_tabla']) for h in ['Campo requerido', 'Clasificación']]]
+    for c in campos_ob:
+        es_critico = c in campos_crit
+        filas.append([Paragraph(c.replace('_', ' ').title(), est['cuerpo_tabla']), 
+                      Paragraph('(!) Critico' if es_critico else 'Estandar', est['campo_critico'] if es_critico else est['cuerpo_tabla'])])
     t = Table(filas, colWidths=[13*cm, 3.6*cm])
     t.setStyle(TableStyle([
-        ('BACKGROUND',    (0, 0), (-1, 0),  C_PRIMARIO),
-        ('ROWBACKGROUNDS',(0, 1), (-1, -1), [C_FONDO_TABLA, white]),
-        ('GRID',          (0, 0), (-1, -1), 0.25, C_LINEA),
-        ('LINEBELOW',     (0, 0), (-1, 0),  1.5, C_ACENTO),
-        ('TOPPADDING',    (0, 0), (-1, -1), 5),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
-        ('LEFTPADDING',   (0, 0), (-1, -1), 8),
-        ('RIGHTPADDING',  (0, 0), (-1, -1), 8),
+        ('BACKGROUND', (0, 0), (-1, 0), C_PRIMARIO),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [C_FONDO_TABLA, white]),
+        ('GRID', (0, 0), (-1, -1), 0.25, C_LINEA),
+        ('LINEBELOW', (0, 0), (-1, 0), 1.5, C_ACENTO),
+        ('LEFTPADDING', (0, 0), (-1, -1), 8),
     ]))
     return t
 
-
-def hacer_caja(texto, est, bg=C_VERDE_FONDO, borde=HexColor('#6ee7b7'), estilo_texto='cuerpo'):
-    t = Table([[Paragraph(texto, est[estilo_texto])]], colWidths=[CONTENT_W])
+def hacer_caja(texto, est, bg=C_VERDE_FONDO, borde=HexColor('#6ee7b7')):
+    t = Table([[Paragraph(texto, est['cuerpo'])]], colWidths=[CONTENT_W])
     t.setStyle(TableStyle([
-        ('BACKGROUND',    (0, 0), (-1, -1), bg),
-        ('LINEBELOW',     (0, 0), (-1, -1), 2, borde),
-        ('LINEBEFORE',    (0, 0), (0, -1),  3, borde),
-        ('TOPPADDING',    (0, 0), (-1, -1), 9),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 9),
-        ('LEFTPADDING',   (0, 0), (-1, -1), 12),
-        ('RIGHTPADDING',  (0, 0), (-1, -1), 12),
+        ('BACKGROUND', (0, 0), (-1, -1), bg),
+        ('LINEBELOW', (0, 0), (-1, -1), 2, borde),
+        ('LINEBEFORE', (0, 0), (0, -1), 3, borde),
+        ('TOPPADDING', (0, 0), (-1, -1), 9), ('BOTTOMPADDING', (0, 0), (-1, -1), 9),
+        ('LEFTPADDING', (0, 0), (-1, -1), 12), ('RIGHTPADDING', (0, 0), (-1, -1), 12),
     ]))
     return t
 
+def hacer_tabla_desde_markdown(filas_md, est):
+    """Convierte filas de texto tipo | col1 | col2 | en una tabla ReportLab."""
+    datos_tabla = []
+    for fila in filas_md:
+        # Limpiar bordes y dividir
+        celdas = [c.strip() for c in fila.strip('|').split('|')]
+        if all(re.match(r'^[- :|]+$', c) for c in celdas): continue # Ignorar separadores |---|
+        
+        # Sanitizar cada celda
+        celdas_safe = []
+        for c in celdas:
+            c_safe = c.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+            c_safe = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', c_safe)
+            celdas_safe.append(Paragraph(c_safe, est['cuerpo_tabla']))
+        
+        datos_tabla.append(celdas_safe)
+    
+    if not datos_tabla: return None
+    
+    # Calcular anchos proporcionales
+    num_cols = len(datos_tabla[0])
+    ancho_col = CONTENT_W / num_cols
+    
+    t = Table(datos_tabla, colWidths=[ancho_col]*num_cols)
+    t.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), C_FONDO_HEADER),
+        ('GRID', (0, 0), (-1, -1), 0.5, C_LINEA),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('TOPPADDING', (0, 0), (-1, -1), 4),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+    ]))
+    return t
 
-# ── Parser de texto de la IA ──────────────────────────────────────
 def parsear_expansion(texto, est):
     elementos = []
-    for linea in texto.split('\n'):
-        linea = linea.strip()
+    lineas = texto.split('\n')
+    i = 0
+    while i < len(lineas):
+        linea = lineas[i].strip()
         if not linea:
-            elementos.append(Spacer(1, 3))
+            i += 1
             continue
-        # Encabezados con ** al inicio y al final
-        if re.match(r'^\*\*[^*]+\*\*$', linea):
-            titulo = linea.replace('**', '').strip().rstrip(':')
-            elementos.append(Spacer(1, 4))
-            elementos.append(Paragraph(titulo, est['subseccion']))
+            
+        # Detección de tablas Markdown
+        if linea.startswith('|'):
+            filas_tabla = []
+            while i < len(lineas) and lineas[i].strip().startswith('|'):
+                filas_tabla.append(lineas[i].strip())
+                i += 1
+            tabla = hacer_tabla_desde_markdown(filas_tabla, est)
+            if tabla:
+                elementos.append(Spacer(1, 0.2*cm))
+                elementos.append(tabla)
+                elementos.append(Spacer(1, 0.2*cm))
             continue
-        # Encabezados mixtos: **TITULO:** texto
-        match = re.match(r'^\*\*(.+?)\*\*[:\s]*(.*)', linea)
-        if match:
-            titulo = match.group(1).strip().rstrip(':')
-            resto  = match.group(2).strip()
-            elementos.append(Spacer(1, 4))
-            elementos.append(Paragraph(titulo, est['subseccion']))
-            if resto:
-                elementos.append(Paragraph(resto, est['cuerpo']))
-            continue
-        # Markdown headers
+
+        # Escapado robusto: primero escapamos todo lo que rompe ReportLab
+        linea_safe = linea.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+        
+        # Luego restauramos solo las negritas si la IA las puso (convertimos ** a <b>)
+        # O si ya venían como tags (que ahora están escapados)
+        linea_safe = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', linea_safe)
+        
         if linea.startswith('###'):
-            elementos.append(Paragraph(linea.lstrip('#').strip(), est['subseccion']))
-            continue
-        if linea.startswith('##') or linea.startswith('#'):
-            elementos.append(Paragraph(linea.lstrip('#').strip(), est['subseccion']))
-            continue
-        # Listas con guión o bullet
-        if re.match(r'^[-•*]\s+', linea):
-            texto_item = re.sub(r'^[-•*]\s+', '', linea)
-            # Limpiar negritas residuales
-            texto_item = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', texto_item)
-            elementos.append(Paragraph(f'&nbsp;&nbsp;&nbsp;— {texto_item}', est['cuerpo']))
-            continue
-        # Sublistas con +
-        if re.match(r'^\+\s+', linea):
-            texto_item = re.sub(r'^\+\s+', '', linea)
-            texto_item = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', texto_item)
-            elementos.append(Paragraph(f'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· {texto_item}', est['cuerpo']))
-            continue
-        # Listas numeradas
-        if re.match(r'^\d+[\.\)]\s+', linea):
-            texto_item = re.sub(r'^\d+[\.\)]\s+', '', linea)
-            texto_item = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', texto_item)
-            elementos.append(Paragraph(texto_item, est['cuerpo']))
-            continue
-        # Texto normal — convertir **negrita** a tags HTML
-        linea_html = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', linea)
-        elementos.append(Paragraph(linea_html, est['cuerpo']))
+            clean_title = linea.replace('###', '').strip().rstrip(':')
+            clean_title = clean_title.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+            elementos.append(Paragraph(clean_title, est['subseccion']))
+        elif re.match(r'^[-•*]\s+', linea):
+            clean_item = re.sub(r'^[-•*]\s+', '', linea_safe)
+            elementos.append(Paragraph(f"&nbsp;&nbsp;&nbsp;— {clean_item}", est['cuerpo']))
+        else:
+            elementos.append(Paragraph(linea_safe, est['cuerpo']))
+        i += 1
     return elementos
 
-
-# ── Función principal ─────────────────────────────────────────────
+# ── Generación de PDF ─────────────────────────────────────────────
 def generar_pdf(datos_proyecto: dict, ruta_salida: str) -> str:
     est = estilos()
     fecha = fecha_es()
-    formato_nombre = datos_proyecto.get('formato_nombre',
-                     datos_proyecto.get('formato', 'Documento'))
-
-    def on_primera_pagina(canvas, doc):
-        # La primera página ES la portada completa
-        dibujar_portada(canvas, datos_proyecto)
-
-    def on_paginas_siguientes(canvas, doc):
-        agregar_pie_pagina(canvas, doc, formato_nombre, fecha)
-
-    doc = SimpleDocTemplate(
-        ruta_salida,
-        pagesize=A4,
-        rightMargin=MARGIN_R,
-        leftMargin=MARGIN_L,
-        topMargin=MARGIN_T,
-        bottomMargin=MARGIN_B + 8*mm,
-        title=f'Project Nexus · {formato_nombre}',
-        author='Project Nexus v0.5.0',
-    )
-
+    formato_nombre = datos_proyecto.get('formato_nombre', datos_proyecto.get('formato', 'Documento'))
+    
+    doc = SimpleDocTemplate(ruta_salida, pagesize=A4, rightMargin=MARGIN_R, leftMargin=MARGIN_L, topMargin=MARGIN_T, bottomMargin=MARGIN_B + 8*mm)
     elementos = []
+    
+    expansion_txt = datos_proyecto.get('expansion', '')
+    print(f"[PDF Engine] Longitud de expansión recibida: {len(expansion_txt)} caracteres.")
+    if len(expansion_txt) < 50:
+        print(f"[PDF Engine] ADVERTENCIA: La expansión es muy corta o está vacía: '{expansion_txt}'")
 
-    # La primera página es manejada por on_primera_pagina (portada completa)
-    # Forzamos un salto de página para que el contenido empiece en la página 2
-    elementos.append(PageBreak())
-
-    # ── SECCIÓN 1: PROPUESTA EXPANDIDA ───────────────────────────
-    elementos.append(SeccionHeader('01', 'Propuesta técnica expandida'))
+    # 0. Ficha Técnica
+    elementos.append(SeccionHeader('00', 'Ficha Técnica de la Propuesta'))
     elementos.append(Spacer(1, 0.4*cm))
-    expansion = datos_proyecto.get('expansion', '')
-    elementos.extend(parsear_expansion(expansion, est))
-    elementos.append(Spacer(1, 0.6*cm))
+    elementos.append(hacer_ficha_tecnica(datos_proyecto, est))
+    elementos.append(Spacer(1, 0.8*cm))
 
-    # ── SECCIÓN 2: EQUIPO INVESTIGADOR ───────────────────────────
-    equipo_data = datos_proyecto.get('equipo', {})
-    equipo_lista = equipo_data.get('equipo_sugerido', [])
-
-    if equipo_lista:
-        elementos.append(PageBreak())
-        elementos.append(SeccionHeader('02', 'Equipo investigador sugerido'))
+    # 1. Estructura Lógica (Árboles)
+    if datos_proyecto.get('arbol_problemas') or datos_proyecto.get('arbol_objetivos'):
+        elementos.append(SeccionHeader('01', 'Estructura Lógica del Proyecto'))
         elementos.append(Spacer(1, 0.4*cm))
-
-        justificacion = equipo_data.get('justificacion_equipo', '')
-        if justificacion:
-            elementos.append(hacer_caja(justificacion, est,
-                bg=C_FONDO_HEADER, borde=C_SECUNDARIO, estilo_texto='cuerpo'))
-            elementos.append(Spacer(1, 0.4*cm))
-
-        elementos.append(hacer_tabla_equipo(equipo_lista, est))
-
-        for adv in equipo_data.get('advertencias', []):
+        if datos_proyecto.get('arbol_problemas'):
+            elementos.append(Paragraph("<b>Árbol de Problemas:</b>", est['etiqueta']))
+            elementos.append(Paragraph(datos_proyecto['arbol_problemas'], est['cuerpo']))
             elementos.append(Spacer(1, 0.3*cm))
-            elementos.append(hacer_caja(f'Advertencia: {adv}', est,
-                bg=C_NARANJA_FONDO, borde=C_NARANJA_BORDE, estilo_texto='cuerpo'))
+        if datos_proyecto.get('arbol_objetivos'):
+            elementos.append(Paragraph("<b>Árbol de Objetivos:</b>", est['etiqueta']))
+            elementos.append(Paragraph(datos_proyecto['arbol_objetivos'], est['cuerpo']))
+            elementos.append(Spacer(1, 0.3*cm))
+        elementos.append(Spacer(1, 0.5*cm))
 
-    # ── SECCIÓN 3: CAMPOS DEL FORMATO ────────────────────────────
-    elementos.append(Spacer(1, 0.6*cm))
-    elementos.append(SeccionHeader('03', 'Campos requeridos por el formato'))
-    elementos.append(Spacer(1, 0.35*cm))
-    elementos.append(Paragraph(
-        f'El formato <b>{formato_nombre}</b> exige los campos listados a continuación. '
-        f'Los marcados como <b>(!) Critico</b> deben estar explícitamente '
-        f'documentados en la versión final.',
-        est['cuerpo']
-    ))
-    elementos.append(Spacer(1, 0.3*cm))
-    elementos.append(hacer_tabla_campos(
-        datos_proyecto.get('campos_obligatorios', []),
-        datos_proyecto.get('campos_criticos', []),
-        est
-    ))
+    # 3. Expansión
+    elementos.append(SeccionHeader('02', 'Propuesta Técnica Detallada (IA)'))
+    elementos.append(Spacer(1, 0.4*cm))
+    elementos.extend(parsear_expansion(datos_proyecto.get('expansion', ''), est))
+    elementos.append(Spacer(1, 1*cm))
 
-    # ── SECCIÓN 4: PRÓXIMOS PASOS ─────────────────────────────────
-    elementos.append(Spacer(1, 0.6*cm))
-    elementos.append(SeccionHeader('04', 'Proximos pasos recomendados'))
-    elementos.append(Spacer(1, 0.35*cm))
+    # 4. Equipo (Más discreto)
+    equipo_data = datos_proyecto.get('equipo', {})
+    if equipo_data.get('equipo_sugerido'):
+        elementos.append(Paragraph("ANEXO: APOYO ESTRATÉGICO Y TALENTO SUGERIDO", est['etiqueta']))
+        elementos.append(Spacer(1, 0.2*cm))
+        elementos.append(hacer_tabla_equipo(equipo_data['equipo_sugerido'], est))
+        elementos.append(Spacer(1, 0.6*cm))
 
-    pasos = [
-        '1.  Revisar y validar la expansión retórica con el equipo investigador.',
-        '2.  Completar los campos críticos marcados con (!) en la sección anterior.',
-        '3.  Solicitar aval institucional de las entidades participantes.',
-        '4.  Construir el árbol de problemas y objetivos de forma participativa.',
-        '5.  Elaborar el presupuesto detallado por vigencias y fuentes de financiación.',
-        '6.  Someter el borrador a revisión interna antes de la radicación oficial.',
-    ]
-    for paso in pasos:
-        elementos.append(Paragraph(paso, est['cuerpo']))
-        elementos.append(Spacer(1, 2))
+    # 3. Campos del Formato
+    elementos.append(SeccionHeader('03', f'Requisitos del Formato {formato_nombre}'))
+    elementos.append(Spacer(1, 0.4*cm))
+    elementos.append(hacer_tabla_campos(datos_proyecto.get('campos_obligatorios', []), datos_proyecto.get('campos_criticos', []), est))
+    elementos.append(Spacer(1, 1*cm))
 
-    # ── BUILD ─────────────────────────────────────────────────────
-    doc.build(
-        elementos,
-        onFirstPage=on_primera_pagina,
-        onLaterPages=on_paginas_siguientes
-    )
-    print(f'[Nexus] PDF profesional generado: {ruta_salida}')
+    # 4. Matching y Validación
+    match_data = datos_proyecto.get('match_evaluacion', {})
+    if match_data:
+        elementos.append(PageBreak())
+        elementos.append(SeccionHeader('04', 'Validación de Requisitos y Compatibilidad'))
+        elementos.append(Spacer(1, 0.5*cm))
+        score = match_data.get('compatibilidad_score', 0)
+        color = C_VERDE if score >= 85 else (C_CRITICO if score < 60 else C_ACENTO)
+        
+        elementos.append(Paragraph(f"<b>Evaluación contra:</b> {match_data.get('demanda_nombre', 'Estándar de Convocatoria')}", est['subseccion']))
+        elementos.append(BarraProgreso(score, color=color))
+        elementos.append(Spacer(1, 0.5*cm))
+        
+        elementos.append(hacer_caja(f"<b>Dictamen IA:</b> {match_data.get('justificacion', '')}", est, bg=C_FONDO_HEADER, borde=color))
+        elementos.append(Spacer(1, 0.6*cm))
+        
+        if match_data.get('brechas_detectadas'):
+            elementos.append(Paragraph("<b>BRECHAS DE CUMPLIMIENTO IDENTIFICADAS</b>", est['etiqueta']))
+            for b in match_data['brechas_detectadas']:
+                elementos.append(Paragraph(f"<font color='#dc2626'>[X]</font> {b}", est['cuerpo']))
+            elementos.append(Spacer(1, 0.6*cm))
+
+        if match_data.get('recomendaciones'):
+            elementos.append(Paragraph("<b>RECOMENDACIONES PARA EL CIERRE DE BRECHAS</b>", est['etiqueta']))
+            for r in match_data['recomendaciones']:
+                elementos.append(Paragraph(f"<font color='#059669'>[+]</font> {r}", est['cuerpo']))
+
+    # 5. Próximos Pasos
+    elementos.append(Spacer(1, 1*cm))
+    elementos.append(SeccionHeader('05', 'Próximos Pasos para la Radicación'))
+    pasos = ["Validar brechas identificadas.", "Completar presupuesto financiero.", "Obtener avales institucionales."]
+    for p in pasos: elementos.append(Paragraph(f"• {p}", est['cuerpo']))
+
+    doc.formato_nombre, doc.fecha_str = formato_nombre, fecha
+    doc.build(elementos, onFirstPage=on_primera_pagina, onLaterPages=on_paginas_siguientes)
     return ruta_salida

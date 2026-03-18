@@ -5,9 +5,13 @@ from formats.erasmus import FormatoErasmus
 from formats.horizonte import FormatoHorizonte
 from formats.zopp import FormatoZOPP
 from formats.marco_logico import FormatoMarcoLogico
+from formats.universal import FormatoUniversal
 
 # Diccionario central — la clave es el string que envía el usuario
 FORMATOS_DISPONIBLES = {
+    "UNIVERSAL": FormatoUniversal,
+    "HIBRIDO": FormatoUniversal,
+    "MAESTRO": FormatoUniversal,
     "MGA": FormatoMGA,
     "MINCIENCIAS": FormatoMinCiencias,
     "COLCIENCIAS": FormatoMinCiencias,  # Alias del nombre anterior

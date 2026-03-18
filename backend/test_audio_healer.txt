@@ -1,0 +1,11 @@
+﻿Archivo test_audio.wav generado.
+
+PROBANDO LËGICA INTERNA DE AUDIO_ENGINE...
+[Nexus] Procesando audio de 88244 bytes...
+[Nexus] Consultando Multimodal (openrouter/healer-alpha)...
+Error Multimodal: 402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions
+Resultado:
+{
+  "error": "No se pudo extraer informaci\u00f3n del audio",
+  "raw": "Error en procesamiento multimodal: 402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions"
+}

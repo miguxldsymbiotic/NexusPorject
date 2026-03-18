@@ -1,0 +1,39 @@
+[
+    {
+        "id": "sgr-mga-colombia",
+        "nombre": "Sistema General de Regalías (SGR) - Formato MGA",
+        "descripcion": "Financiación para proyectos de inversión pública en Colombia que cumplan con la Metodología General Ajustada (MGA).",
+        "requisitos_clave": [
+            "Alineación con el Plan Nacional de Desarrollo",
+            "Identificación de población beneficiaria exacta",
+            "Árbol de problemas y objetivos completo",
+            "Análisis de riesgos y medidas de mitigación",
+            "Sostenibilidad financiera y ambiental"
+        ],
+        "campos_prioritarios": ["sector_tematico", "poblacion_beneficiaria", "cadena_valor"]
+    },
+    {
+        "id": "minciencias-salud-2024",
+        "nombre": "Convocatoria MinCiencias: Salud Rural y Telemedicina",
+        "descripcion": "Fondo para proyectos que utilicen tecnología para mejorar el acceso a la salud en zonas rurales dispersas de Colombia.",
+        "requisitos_clave": [
+            "Uso de tecnología (IA, IoT, Telemetría)",
+            "Enfoque en zonas rurales",
+            "Impacto social medible",
+            "Sostenibilidad a largo plazo"
+        ],
+        "campos_prioritarios": ["sector_tematico", "impacto_social", "sostenibilidad"]
+    },
+    {
+        "id": "grant-sostenibilidad-onu",
+        "nombre": "Global Grant: Sostenibilidad y ODS 2030",
+        "descripcion": "Financiación para iniciativas que ataquen directamente uno o más Objetivos de Desarrollo Sostenible (ODS).",
+        "requisitos_clave": [
+            "Alineación con ODS",
+            "Marco teórico sólido",
+            "Análisis de riesgos ambientales",
+            "Presupuesto detallado"
+        ],
+        "campos_prioritarios": ["ods_relacionados", "marco_teorico", "analisis_riesgos"]
+    }
+]

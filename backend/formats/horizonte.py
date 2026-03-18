@@ -67,3 +67,23 @@ class FormatoHorizonte(BaseFormat):
     - Énfasis en novedad e innovación disruptiva
     - Citar literatura científica reciente (últimos 3 años)
     """
+
+    @classmethod
+    def get_secciones(cls):
+        return [
+            {
+                "id": "excellence",
+                "nombre": "Excelencia: Objetivos, Metodología y Ambición",
+                "prompt": "Genera una sección de 'Excelencia' para una propuesta de Horizonte Europa. Debe incluir: 1. Objetivos del proyecto (SMART), 2. Metodología detallada (incluyendo conceptos interdisciplinarios y recursos de género si aplica), 3. Ambición y estado del arte (cómo el proyecto va más allá de lo existente). Usa lenguaje técnico y académico de alto nivel."
+            },
+            {
+                "id": "impact",
+                "nombre": "Impacto: Vías hacia el impacto y Medidas para maximizarlo",
+                "prompt": "Genera una sección de 'Impacto' para Horizonte Europa. Debe detallar: 1. Contribución a los 'Expected Impacts' del programa de trabajo, 2. Medidas de difusión, explotación y comunicación (C&D), 3. Estrategia de gestión de propiedad intelectual. Sé específico y utiliza métricas de impacto realistas."
+            },
+            {
+                "id": "implementation",
+                "nombre": "Implementación: Plan de Trabajo, Recursos y Gestión",
+                "prompt": "Genera una sección de 'Implementación' para Horizonte Europa. Debe describir: 1. Plan de trabajo (Work Packages detallados), 2. Estructura de gestión y toma de decisiones, 3. Consorcio y capacidades de los socios, 4. Evaluación de riesgos detallada y planes de mitigación."
+            }
+        ]

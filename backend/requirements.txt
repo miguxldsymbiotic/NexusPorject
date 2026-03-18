@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+google-generativeai
+python-dotenv
+reportlab
+jinja2
+requests
+python-multipart

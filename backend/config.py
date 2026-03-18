@@ -4,11 +4,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Credenciales
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
-# Modelo — llama-3.3-70b es el más capaz en el tier gratuito de Groq
-AI_MODEL = "llama-3.3-70b-versatile"
+# Nueva API Cerebras (Migración)
+CEREBRAS_API_KEY = "csk-yd4pppryxwj5ppk6edyfjdhnd85hccv9wvc8e2errmvyexrj"
+
+# Modelo de IA (Cerebras - Qwen Ultra-Fast)
+AI_MODEL = "qwen-3-235b-a22b-instruct-2507" 
+AI_PROVIDER = "CEREBRAS"
 
 # Validación al arrancar
-if not GROQ_API_KEY:
-    raise ValueError("No se encontró GROQ_API_KEY en el archivo .env")
+if not CEREBRAS_API_KEY and AI_PROVIDER == "CEREBRAS":
+    print("WARNING: No se encontró CEREBRAS_API_KEY")

@@ -1,0 +1,10 @@
+﻿Archivo test_audio.wav generado.
+
+PROBANDO LËGICA INTERNA DE AUDIO_ENGINE...
+[Nexus] Procesando audio de 88244 bytes...
+[Nexus] Consultando Multimodal (google/gemini-2.0-flash-001)...
+Resultado:
+{
+  "error": "No se pudo extraer informaci\u00f3n del audio",
+  "raw": "Vale, env\u00edame el audio. Estar\u00e9 listo para transcribirlo, extraer la informaci\u00f3n y organizarla en el formato JSON que especificaste. Analizar\u00e9 el audio cuidadosamente para identificar los campos relevantes y completar la estructura UNIVERSAL.\n"
+}

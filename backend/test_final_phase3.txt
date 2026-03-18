@@ -1,0 +1,37 @@
+﻿Archivo test_audio.wav generado.
+
+PROBANDO LËGICA DE AUDIO (Requiere balance OpenRouter)...
+[Nexus] Procesando audio de 88244 bytes...
+[Nexus] Consultando Multimodal (google/gemini-2.0-flash-001)...
+Error Multimodal: 402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions
+Resultado:
+{
+  "error": "No se pudo extraer informaci\u00f3n del audio",
+  "raw": "Error en procesamiento multimodal: 402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions"
+}
+
+PROBANDO LËGICA DE TRANSCRIPCIËN (100% GRATIS)...
+[Nexus] Estructurando transcripci¾n de 81 caracteres...
+[Nexus] Consultando a OpenRouter (google/gemini-2.0-flash-001)...
+Resultado Transcripci¾n:
+{
+  "datos_extraidos": {
+    "titulo_proyecto": "App de Telemedicina con IA para Triaje en Zonas Rurales",
+    "objetivo_general": "Desarrollar e implementar una aplicaci\u00f3n de telemedicina que utilice inteligencia artificial para realizar triaje m\u00e9dico en zonas rurales, mejorando el acceso a la atenci\u00f3n sanitaria y optimizando los recursos disponibles.",
+    "problema_central": "Acceso limitado a la atenci\u00f3n m\u00e9dica oportuna y eficiente en zonas rurales, resultando en diagn\u00f3sticos tard\u00edos, complicaciones de salud prevenibles y desigualdades en el acceso a servicios sanitarios.",
+    "metodologia": "Desarrollo \u00e1gil de software, con fases de dise\u00f1o, prototipado, pruebas y despliegue. Se utilizar\u00e1n t\u00e9cnicas de inteligencia artificial y aprendizaje autom\u00e1tico para el triaje. Se realizar\u00e1n pruebas piloto en comunidades rurales seleccionadas para evaluar la usabilidad y efectividad de la aplicaci\u00f3n.",
+    "sector_tematico": "Salud, Tecnolog\u00eda, Desarrollo Rural",
+    "duracion_estimada": "12 meses",
+    "beneficiarios": "Residentes de zonas rurales con acceso limitado a atenci\u00f3n m\u00e9dica, personal sanitario en zonas rurales, sistema de salud p\u00fablica.",
+    "arbol_problemas": "Ra\u00edz: Acceso limitado a la atenci\u00f3n m\u00e9dica en zonas rurales. Ramas: Falta de infraestructura, escasez de personal m\u00e9dico, costos de transporte, falta de informaci\u00f3n. Consecuencias: Diagn\u00f3sticos tard\u00edos, complicaciones de salud, mortalidad evitable.",
+    "arbol_objetivos": "Ra\u00edz: Mejorar el acceso a la atenci\u00f3n m\u00e9dica en zonas rurales. Ramas: Desarrollar infraestructura de telemedicina, capacitar personal m\u00e9dico, reducir costos de transporte, mejorar la informaci\u00f3n. Fines: Diagn\u00f3sticos tempranos, reducci\u00f3n de complicaciones de salud, disminuci\u00f3n de la mortalidad evitable.",
+    "ods_relacionados": "ODS 3: Salud y Bienestar, ODS 9: Industria, Innovaci\u00f3n e Infraestructura, ODS 10: Reducci\u00f3n de las Desigualdades",
+    "impacto_social": "Mejora del acceso a la atenci\u00f3n m\u00e9dica, reducci\u00f3n de desigualdades en salud, empoderamiento de comunidades rurales, optimizaci\u00f3n de recursos sanitarios.",
+    "presupuesto_total": "A determinar (requiere an\u00e1lisis detallado de costos)",
+    "marco_teorico": "Investigaci\u00f3n sobre telemedicina, inteligencia artificial en salud, triaje m\u00e9dico, desaf\u00edos de la atenci\u00f3n m\u00e9dica en zonas rurales, pol\u00edticas de salud p\u00fablica.",
+    "analisis_riesgos": "Riesgos tecnol\u00f3gicos (fallos en la aplicaci\u00f3n, problemas de conectividad), riesgos regulatorios (cumplimiento de normativas de privacidad y seguridad de datos), riesgos sociales (resistencia al cambio, falta de confianza en la tecnolog\u00eda).",
+    "presupuesto_detallado": "A determinar (requiere desglose de costos de desarrollo, personal, infraestructura, capacitaci\u00f3n, pruebas piloto, etc.)",
+    "sostenibilidad": "Modelo de financiaci\u00f3n mixto (p\u00fablico-privado), capacitaci\u00f3n continua del personal, alianzas con organizaciones locales, escalabilidad de la soluci\u00f3n."
+  },
+  "mensaje": "He extra\u00eddo los campos principales a partir de la descripci\u00f3n inicial del proyecto. Algunos campos como presupuesto detallado y an\u00e1lisis de riesgos requieren informaci\u00f3n adicional para ser completados con mayor precisi\u00f3n."
+}

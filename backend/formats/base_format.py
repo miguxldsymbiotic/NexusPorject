@@ -13,6 +13,16 @@ class BaseFormat:
         return cls.instrucciones_retorica
 
     @classmethod
+    def get_secciones(cls) -> list:
+        """
+        Retorna la lista de secciones para generación secuencial.
+        Por defecto, una sola sección llamada 'Expansión General'.
+        """
+        return getattr(cls, 'SECCIONES', [
+            {"id": "expansion", "nombre": "Expansión General", "prompt": cls.instrucciones_retorica}
+        ])
+
+    @classmethod
     def get_campos_obligatorios(cls) -> list:
         return cls.campos_obligatorios
 

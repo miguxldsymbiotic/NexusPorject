@@ -4,27 +4,34 @@ from formats.format_registry import get_formato
 # Prompt que le pide a la IA analizar qué falta en la idea
 ANALYSIS_PROMPT = """
 Eres un revisor experto en formulación de proyectos para convocatorias {formato}.
+Tu objetivo es realizar un "Gap Analysis" (Detección de Brechas) técnico y riguroso.
 
 Se te presenta una idea de proyecto:
 ---
 {idea}
 ---
 
-Los siguientes campos son CRÍTICOS para el formato {formato} y deben estar 
-presentes o al menos insinuados en la descripción del proyecto:
+Los siguientes campos son CRÍTICOS para el formato {formato}:
 {campos_criticos}
 
-Tu tarea es analizar la idea y determinar cuáles de esos campos críticos 
-NO están cubiertos ni siquiera de forma implícita.
+Tu tarea es evaluar la presencia y madurez de cada campo crítico en la descripción proporcionada.
+Para cada campo, asigna un "nivel_madurez":
+- "Verde": El campo está claramente definido, con detalles técnicos y coherencia.
+- "Amarillo": El campo se menciona o se insinúa, pero le falta profundidad, datos o justificación.
+- "Rojo": El campo está totalmente ausente o lo que se dice es irrelevante/insuficiente.
 
 Responde ÚNICAMENTE con un objeto JSON con esta estructura exacta, sin texto adicional:
 {{
-  "campos_faltantes": ["campo1", "campo2"],
-  "campos_cubiertos": ["campo3", "campo4"],
-  "analisis_breve": "Una sola oración explicando el estado general de la idea"
+  "analisis_detallado": [
+    {{
+      "campo": "nombre_del_campo",
+      "nivel_madurez": "Verde/Amarillo/Rojo",
+      "observacion": "Breve explicación de por qué tiene ese nivel y qué falta específicamente."
+    }}
+  ],
+  "analisis_general": "Una sola oración explicando el estado global de la propuesta.",
+  "puntuacion_maestra": 0-100
 }}
-
-Si todos los campos están cubiertos, "campos_faltantes" debe ser una lista vacía [].
 """
 
 # Prompt para generar la pregunta de clarificación
@@ -46,8 +53,7 @@ Responde solo con la pregunta, sin introducción ni cierre.
 
 def analizar_campos_faltantes(idea: str, formato: str) -> dict:
     """
-    Analiza si la idea cubre los campos críticos del formato solicitado.
-    Retorna qué campos faltan y cuáles están cubiertos.
+    Analiza la madurez de los campos críticos del formato solicitado.
     """
     clase_formato = get_formato(formato)
     campos_criticos = clase_formato.get_campos_criticos()
@@ -58,72 +64,69 @@ def analizar_campos_faltantes(idea: str, formato: str) -> dict:
         campos_criticos="\n".join(f"- {c}" for c in campos_criticos)
     )
 
-    print(f"[Nexus] Analizando campos críticos para formato {formato}...")
+    print(f"[Nexus] Realizando Gap Analysis (Brechas) para formato {formato}...")
     respuesta_raw = ask_ai(prompt)
 
-    # Limpiamos la respuesta y la parseamos como JSON
     import json, re
-    # Extraemos el JSON aunque la IA añada texto extra
     match = re.search(r'\{.*\}', respuesta_raw, re.DOTALL)
     if not match:
-        # Si la IA no devolvió JSON válido, asumimos que no faltan campos
+        print(f"[DEBUG] Respuesta raw sin JSON: {respuesta_raw}")
         return {
-            "campos_faltantes": [],
-            "campos_cubiertos": campos_criticos,
-            "analisis_breve": "No se pudo analizar — se procede con la expansión"
+            "analisis_detallado": [],
+            "analisis_general": "Error en el análisis de IA.",
+            "puntuacion_maestra": 0
         }
 
     try:
-        resultado = json.loads(match.group())
-        return resultado
+        return json.loads(match.group())
     except json.JSONDecodeError:
         return {
-            "campos_faltantes": [],
-            "campos_cubiertos": campos_criticos,
-            "analisis_breve": "Análisis inconcluso — se procede con la expansión"
+            "analisis_detallado": [],
+            "analisis_general": "Análisis corrupto de IA.",
+            "puntuacion_maestra": 0
         }
 
-def generar_pregunta_clarificacion(campos_faltantes: list, formato: str) -> str:
+def generar_pregunta_clarificacion(analisis_detallado: list, formato: str) -> str:
     """
-    Genera una pregunta de clarificación amigable para los campos que faltan.
+    Genera una pregunta amigable basada en los campos con nivel Rojo o Amarillo.
     """
+    campos_debiles = [
+        f"{item['campo']} ({item['observacion']})" 
+        for item in analisis_detallado 
+        if item['nivel_madurez'] in ['Rojo', 'Amarillo']
+    ]
+    
     prompt = QUESTION_PROMPT.format(
         formato=formato,
-        campos_faltantes="\n".join(f"- {c}" for c in campos_faltantes)
+        campos_faltantes="\n".join(campos_debiles)
     )
     return ask_ai(prompt)
 
 def evaluar_idea(idea: str, formato: str) -> dict:
     """
-    Función principal del ciclo de clarificación.
-    Retorna si la idea está lista para expandirse o si necesita más información.
-    
-    Retorna un dict con:
-    - lista_para_expandir: bool
-    - pregunta: str (si no está lista)
-    - campos_faltantes: list
-    - campos_cubiertos: list
-    - analisis: str
+    Evalúa la idea y determina si requiere clarificación o puede expandirse.
     """
     analisis = analizar_campos_faltantes(idea, formato)
-    campos_faltantes = analisis.get("campos_faltantes", [])
+    detallado = analisis.get("analisis_detallado", [])
+    
+    # Decidimos si expandir: Si no hay "Rojos" y la puntuación es > 60
+    rojos = [c for c in detallado if c['nivel_madurez'] == 'Rojo']
+    puntuacion = analisis.get("puntuacion_maestra", 0)
+    
+    lista_para_expandir = len(rojos) == 0 and puntuacion >= 60
 
-    if not campos_faltantes:
+    if lista_para_expandir:
         return {
             "lista_para_expandir": True,
             "pregunta": None,
-            "campos_faltantes": [],
-            "campos_cubiertos": analisis.get("campos_cubiertos", []),
-            "analisis": analisis.get("analisis_breve", "")
+            "analisis_completo": analisis
         }
 
-    # Hay campos faltantes — generamos la pregunta
-    pregunta = generar_pregunta_clarificacion(campos_faltantes, formato)
+    # Necesita más información
+    pregunta = generar_pregunta_clarificacion(detallado, formato)
 
     return {
         "lista_para_expandir": False,
         "pregunta": pregunta,
-        "campos_faltantes": campos_faltantes,
-        "campos_cubiertos": analisis.get("campos_cubiertos", []),
-        "analisis": analisis.get("analisis_breve", "")
+        "analisis_completo": analisis
     }

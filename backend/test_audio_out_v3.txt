@@ -1,0 +1,11 @@
+﻿Archivo test_audio.wav generado.
+
+PROBANDO LËGICA INTERNA DE AUDIO_ENGINE...
+[Nexus] Procesando audio de 88244 bytes...
+[Nexus] Consultando Multimodal (google/gemini-flash-1.5-8b:free)...
+Error Multimodal: 404 Client Error: Not Found for url: https://openrouter.ai/api/v1/chat/completions
+Resultado:
+{
+  "error": "No se pudo extraer informaci\u00f3n del audio",
+  "raw": "Error en procesamiento multimodal: 404 Client Error: Not Found for url: https://openrouter.ai/api/v1/chat/completions"
+}

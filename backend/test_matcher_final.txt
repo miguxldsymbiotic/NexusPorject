@@ -1,0 +1,33 @@
+﻿PROBANDO LËGICA DE MATCHING DE DEMANDAS...
+[Matcher] Evaluando compatibilidad con: Convocatoria MinCiencias: Salud Rural y Telemedicina...
+[Nexus] Consultando a OpenRouter (google/gemini-2.0-flash-001)...
+[Matcher] Respuesta AI recibida (454 chars)
+[Matcher] Match exitoso: 90%
+[Matcher] Evaluando compatibilidad con: Global Grant: Sostenibilidad y ODS 2030...
+[Nexus] Consultando a OpenRouter (google/gemini-2.0-flash-001)...
+[Matcher] Respuesta AI recibida (1220 chars)
+[Matcher] Match exitoso: 85%
+[Matcher] Evaluando compatibilidad con: LATAM Tech Innovators - Seed Fund...
+[Nexus] Consultando a OpenRouter (google/gemini-2.0-flash-001)...
+[Matcher] Respuesta AI recibida (984 chars)
+[Matcher] Match exitoso: 85%
+
+Se encontraron 3 matches:
+
+--- Convocatoria MinCiencias: Salud Rural y Telemedicina ---
+Score: 90%
+Justificaci¾n: El proyecto se alinea fuertemente con la convocatoria. Cumple con el uso de tecnologÝa para telemedicina, se enfoca en zonas rurales (Amazonas), tiene un impacto social claro (reducci¾n de mortalidad infantil) y aborda la sostenibilidad a travÚs de alianzas y suscripciones. Los campos prioritarios de la demanda estßn bien cubiertos.
+Brechas: 
+Recomendaciones: 
+
+--- Global Grant: Sostenibilidad y ODS 2030 ---
+Score: 85%
+Justificaci¾n: El proyecto se alinea fuertemente con los ODS al abordar la salud en ßreas remotas, un problema directamente relacionado con la reducci¾n de la desigualdad y la mejora de la salud y el bienestar. La telemedicina, con su enfoque en la tecnologÝa y la sostenibilidad a travÚs de alianzas y suscripciones, encaja bien con el espÝritu de la convocatoria. Sin embargo, necesita fortalecer explÝcitamente el marco te¾rico y el anßlisis de riesgos ambientales.
+Brechas: Marco te¾rico s¾lido, Anßlisis de riesgos ambientales
+Recomendaciones: Incluir una secci¾n detallada sobre el marco te¾rico que respalda la efectividad de la telemedicina en contextos similares y c¾mo se alinea con las mejores prßcticas., Realizar un anßlisis de riesgos ambientales, considerando el impacto de la infraestructura tecnol¾gica (tablets, satÚlites) y la gesti¾n de residuos electr¾nicos., Especificar explÝcitamente quÚ ODS aborda el proyecto y c¾mo contribuye a sus metas., Detallar el presupuesto del proyecto, incluyendo costos de hardware, software, conectividad, capacitaci¾n y personal.
+
+--- LATAM Tech Innovators - Seed Fund ---
+Score: 85%
+Justificaci¾n: El proyecto se alinea bien con la demanda ya que es una startup tecnol¾gica con potencial de escalabilidad en LatAm. La innovaci¾n tÚcnica (telemedicina con conexi¾n satelital) es un punto fuerte. El impacto social tambiÚn es relevante. Sin embargo, la falta de detalles sobre el modelo de negocio y el equipo tÚcnico podrÝan ser ßreas de mejora.
+Brechas: Modelo de negocio claro, Equipo tÚcnico fuerte
+Recomendaciones: Detallar el modelo de negocio, incluyendo proyecciones de ingresos y costos., Resaltar la experiencia y habilidades del equipo tÚcnico, incluyendo perfiles de los miembros clave., Cuantificar el impacto social esperado (ej: n·mero de vidas salvadas, reducci¾n de la tasa de mortalidad infantil)., Incluir un plan de escalabilidad que demuestre c¾mo la app puede expandirse a otras regiones del Amazonas o incluso a otros paÝses.
