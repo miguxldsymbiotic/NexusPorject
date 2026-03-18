@@ -123,24 +123,154 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn-ai-mini { background: var(--azul-claro); color: var(--azul); border: none; padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; margin-left: 8px; }
 
-/* ── Previsualizador ─────────────────────────────────── */
+/* ── Previsualizador Premium ───────────────────────────── */
 .previsualizador { 
-  background: white; 
-  border: 1px solid var(--linea); 
+  background: var(--blanco);
   border-radius: 12px; 
-  padding: 2.5rem; 
+  padding: 2rem; 
   margin-top: 1.5rem; 
-  min-height: 600px;
-  max-height: 1200px; 
+  min-height: 400px;
   overflow-y: auto; 
-  font-size: 14.5px; 
-  line-height: 1.8; 
-  color: var(--texto); 
-  box-shadow: inset 0 2px 8px rgba(0,0,0,0.05); 
+  color: var(--texto);
+  border: 1px solid var(--linea);
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
+  font-size: 14.5px;
+  line-height: 1.7;
 }
-.previsualizador h3 { margin-top: 1.8rem; color: var(--azul); border-bottom: 2px solid var(--azul-claro); padding-bottom: 6px; }
-.previsualizador strong { color: var(--azul-med); }
-.editor-ai-caja { background: var(--azul-claro); border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem; border: 1px solid rgba(26,86,160,0.15); }
+
+/* ── Acordeones de Previsualización (Premium) ───────────── */
+.accordion-item {
+  background: var(--blanco);
+  border: 1px solid var(--linea);
+  border-left: 4px solid var(--naranja);
+  border-radius: 8px;
+  margin-bottom: 1.2rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: all 0.2s ease;
+}
+
+.accordion-item:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+}
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  padding: 1.2rem 1.5rem;
+  cursor: pointer;
+  background: var(--fondo);
+  transition: background 0.2s;
+}
+
+.accordion-header:hover { background: var(--azul-claro); }
+
+.acc-num {
+  font-family: 'DM Sans', monospace;
+  background: var(--azul);
+  color: white;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  margin-right: 1.2rem;
+}
+
+.acc-title-wrap { flex: 1; }
+
+.acc-title {
+  color: var(--azul);
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 17px;
+  display: block;
+}
+
+.acc-desc {
+  color: var(--suave);
+  font-size: 12.5px;
+  margin-top: 4px;
+}
+
+.acc-badge {
+  border: 1px solid var(--naranja);
+  color: var(--naranja);
+  padding: 3px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--naranja-cl);
+}
+
+.accordion-body {
+  display: none;
+  padding: 1.5rem;
+  border-top: 1px solid var(--linea);
+  background: var(--blanco);
+}
+
+.accordion-item.active .accordion-body { display: block; }
+
+/* Sobrescribir los estilos inline del JS para los textareas */
+.sec-contenido {
+  background: #fdfdfd !important;
+  color: var(--texto) !important;
+  border: 1px solid var(--linea) !important;
+  border-radius: 8px !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 14.5px !important;
+  line-height: 1.6 !important;
+  padding: 16px !important;
+  transition: all 0.2s ease !important;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.02) !important;
+}
+
+.sec-contenido:focus {
+  border-color: var(--azul-med) !important;
+  box-shadow: 0 0 0 4px rgba(26,86,160,0.1) !important;
+  outline: none !important;
+}
+
+.campo-preview {
+  background: var(--fondo);
+  border: 1px solid var(--linea);
+  border-radius: 8px;
+  padding: 1.2rem;
+  color: var(--texto);
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+}
+
+.campo-preview:last-child { margin-bottom: 0; }
+
+.campo-label {
+  display: block;
+  font-size: 11px;
+  color: var(--naranja);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.md-h { color: var(--azul); font-weight: 700; margin: 16px 0 10px; display: block; font-family: 'Playfair Display', serif; }
+.md-p { margin-bottom: 12px; color: var(--texto); }
+.md-li { margin-left: 20px; display: list-item; list-style-type: disc; margin-bottom: 6px; color: var(--texto); }
+.previsualizador h1, .previsualizador h2, .previsualizador h3 { color: var(--azul); font-family: 'Playfair Display', serif; }
+.previsualizador h3 { margin-top: 2rem; border-bottom: 1px solid var(--linea); padding-bottom: 8px; font-size: 1.3rem; }
+.previsualizador h2 { margin-top: 2.5rem; font-size: 1.5rem; }
+.previsualizador h1 { margin-top: 3rem; font-size: 1.8rem; border-bottom: 2px solid var(--naranja); padding-bottom: 8px; }
+.previsualizador p { margin-bottom: 1rem; }
+.previsualizador strong { color: var(--azul-med); font-weight: 700; }
+.previsualizador ul, .previsualizador ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+.previsualizador li { margin-bottom: 0.5rem; }
+.editor-ai-caja { background: white; border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem; border: 1px solid var(--linea); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 
 /* ── CSS Grid & Panels ── */
 .panel-section-title {

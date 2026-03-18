@@ -1,450 +1,519 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Project Nexus | Motor de Homologación I+D+i</title>
-  
+
   <!-- Fonts Premium -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap"
+    rel="stylesheet">
+
   <link rel="stylesheet" href="static/index.css">
 </head>
+
 <body>
 
-<header>
-  <div class="logo">
-    <div class="logo-marca">N</div>
-    <div class="logo-texto"><strong>Project Nexus</strong><span>Motor de Propuestas</span></div>
-  </div>
-  <div class="version-badge">v0.6.0</div>
-</header>
+  <header>
+    <div class="logo">
+      <div class="logo-marca">N</div>
+      <div class="logo-texto"><strong>Project Nexus</strong><span>Motor de Propuestas</span></div>
+    </div>
+    <div class="version-badge">v0.6.0</div>
+  </header>
 
-<div class="hero">
-  <div class="hero-tag">Propuestas de Alto Impacto</div>
-  <h1>Transforma tu idea en una <em>Propuesta Élite</em></h1>
-  <p>Completa los campos técnicos y deja que Nexus formule el documento profesional siguiendo los estándares de la convocatoria.</p>
-</div>
-
-<main>
-  <div class="pasos">
-    <div class="paso-indicador activo" id="ind-1"><div class="paso-num">1</div><div class="paso-nombre">Proyecto</div></div>
-    <div class="paso-indicador" id="ind-2"><div class="paso-num">2</div><div class="paso-nombre">Clarificación</div></div>
-    <div class="paso-indicador" id="ind-3"><div class="paso-num">3</div><div class="paso-nombre">Formulación</div></div>
-    <div class="paso-indicador" id="ind-4"><div class="paso-num">4</div><div class="paso-nombre">Revisión</div></div>
+  <div class="hero">
+    <div class="hero-tag">Propuestas de Alto Impacto</div>
+    <h1>Transforma tu idea en una <em>Propuesta Élite</em></h1>
+    <p>Completa los campos técnicos y deja que Nexus formule el documento profesional siguiendo los estándares de la
+      convocatoria.</p>
   </div>
 
-  <!-- PANEL 1: FORMULARIO MAESTRO -->
-  <div class="panel visible" id="panel-1">
-    <div class="panel-header">
-      <div class="panel-icon">📋</div>
-      <div>
-        <div class="panel-titulo">Formulario Técnico del Proyecto</div>
-        <div class="panel-desc">Ingresa los datos requeridos para la expansión retórica del documento. Todos los campos con (*) son obligatorios.</div>
+  <main>
+    <div class="pasos">
+      <div class="paso-indicador activo" id="ind-1">
+        <div class="paso-num">1</div>
+        <div class="paso-nombre">Proyecto</div>
+      </div>
+      <div class="paso-indicador" id="ind-2">
+        <div class="paso-num">2</div>
+        <div class="paso-nombre">Clarificación</div>
+      </div>
+      <div class="paso-indicador" id="ind-3">
+        <div class="paso-num">3</div>
+        <div class="paso-nombre">Formulación</div>
+      </div>
+      <div class="paso-indicador" id="ind-4">
+        <div class="paso-num">4</div>
+        <div class="paso-nombre">Revisión</div>
       </div>
     </div>
 
-    <div class="alerta alerta-error" id="error-1"></div>
-
-    <!-- SECCIÓN A: IDEA CENTRAL -->
-    <div class="panel-section-title">A. Concepto de Innovación</div>
-    <div class="campo">
-      <label>Idea Semilla / Concepto del Proyecto <span>*</span> <button class="btn-ai-mini" onclick="aiAssist('idea')">✨ Refinar con IA</button></label>
-      <div class="input-audio-wrap">
-        <textarea id="idea" placeholder="Describe el qué, para quién y para qué de tu proyecto..."></textarea>
-        <button id="record-btn" class="btn-audio" onclick="toggleRecording()" title="Grabar audio">🎤</button>
-        <button class="btn-audio" style="right: 48px;" onclick="abrirModalTranscripcion()" title="Pegar transcripción">📝</button>
+    <!-- PANEL 1: FORMULARIO MAESTRO -->
+    <div class="panel visible" id="panel-1">
+      <div class="panel-header">
+        <div class="panel-icon">📋</div>
+        <div>
+          <div class="panel-titulo">Formulario Técnico del Proyecto</div>
+          <div class="panel-desc">Ingresa los datos requeridos para la expansión retórica del documento. Todos los
+            campos con (*) son obligatorios.</div>
+        </div>
       </div>
-      <div class="hint">Puedes dictar tu idea o pegar una transcripción de WhatsApp.</div>
-    </div>
 
-    <div class="grid-2">
+      <div class="alerta alerta-error" id="error-1"></div>
+
+      <!-- SECCIÓN A: IDEA CENTRAL -->
+      <div class="panel-section-title">A. Concepto de Innovación</div>
       <div class="campo">
-        <label>Sector Temático <span>*</span></label>
-        <select id="sector_tematico">
-          <option value="">— Selecciona —</option>
-          <option>Salud y Bienestar</option>
-          <option>Transición Energética</option>
-          <option>Tecnologías de la Información (TIC)</option>
-          <option>Agroindustria y Seguridad Alimentaria</option>
-          <option>Educación de Calidad</option>
-          <option>Medio Ambiente y Cambio Climático</option>
-          <option>Desarrollo Social y Comunitario</option>
-        </select>
+        <label>Idea Semilla / Concepto del Proyecto <span>*</span> <button class="btn-ai-mini"
+            onclick="aiAssist('idea')">✨ Refinar con IA</button></label>
+        <div class="input-audio-wrap">
+          <textarea id="idea" placeholder="Describe el qué, para quién y para qué de tu proyecto..."></textarea>
+          <button id="record-btn" class="btn-audio" onclick="toggleRecording()" title="Grabar audio">🎤</button>
+          <button class="btn-audio" style="right: 48px;" onclick="abrirModalTranscripcion()"
+            title="Pegar transcripción">📝</button>
+        </div>
+        <div class="hint">Puedes dictar tu idea o pegar una transcripción de WhatsApp.</div>
       </div>
-      <div class="campo">
-        <label>Formato de Salida <span>*</span></label>
-        <select id="formato">
-          <option value="">— Cargando formatos... —</option>
-        </select>
-      </div>
-    </div>
 
-    <!-- SECCIÓN B: METADATA ACADÉMICA -->
-    <div class="panel-section-title">B. Identificación Académica</div>
-    <div class="grid-2">
-      <div class="campo">
-        <label>Facultad / Unidad <span>*</span></label>
-        <select id="facultad">
-          <option value="">— Selecciona —</option>
-          <option>Ingeniería</option>
-          <option>Ciencias Básicas</option>
-          <option>Ciencias de la Salud</option>
-          <option>Ciencias Jurídicas y Sociales</option>
-          <option>Artes y Humanidades</option>
-          <option>Ciencias Agropecuarias</option>
-          <option>Educación</option>
-        </select>
+      <div class="grid-2">
+        <div class="campo">
+          <label>Sector Temático <span>*</span></label>
+          <select id="sector_tematico">
+            <option value="">— Selecciona —</option>
+            <option>Salud y Bienestar</option>
+            <option>Transición Energética</option>
+            <option>Tecnologías de la Información (TIC)</option>
+            <option>Agroindustria y Seguridad Alimentaria</option>
+            <option>Educación de Calidad</option>
+            <option>Medio Ambiente y Cambio Climático</option>
+            <option>Desarrollo Social y Comunitario</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label>Formato de Salida <span>*</span></label>
+          <select id="formato">
+            <option value="">— Cargando formatos... —</option>
+          </select>
+        </div>
       </div>
-      <div class="campo">
-        <label>Grupo de Investigación <span>*</span></label>
-        <input type="text" id="grupo" class="input-modern" placeholder="Nombre completo del grupo">
-      </div>
-    </div>
-    <div class="grid-2">
-      <div class="campo">
-        <label>Investigador Principal (PI) <span>*</span></label>
-        <input type="text" id="investigador" class="input-modern" placeholder="Nombre completo">
-      </div>
-      <div class="campo">
-        <label>ID / ORCID / CVLAC</label>
-        <input type="text" id="id_investigador" class="input-modern" placeholder="orcid.org/...">
-      </div>
-    </div>
 
-    <!-- SECCIÓN C: ESTRUCTURA TÉCNICA -->
-    <div class="panel-section-title">C. Herramientas y Metodología</div>
-    <div class="grid-2">
-      <div class="campo">
-        <label>Demanda / Convocatoria (Matching)</label>
-        <select id="id_demanda">
-          <option value="">— Borrador Libre —</option>
-        </select>
-        <div class="hint">Nexus validará tu idea contra este estándar específico.</div>
+      <!-- SECCIÓN B: METADATA ACADÉMICA -->
+      <div class="panel-section-title">B. Identificación Académica</div>
+      <div class="grid-2">
+        <div class="campo">
+          <label>Facultad / Unidad <span>*</span></label>
+          <select id="facultad">
+            <option value="">— Selecciona —</option>
+            <option>Ingeniería</option>
+            <option>Ciencias Básicas</option>
+            <option>Ciencias de la Salud</option>
+            <option>Ciencias Jurídicas y Sociales</option>
+            <option>Artes y Humanidades</option>
+            <option>Ciencias Agropecuarias</option>
+            <option>Educación</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label>Grupo de Investigación <span>*</span></label>
+          <input type="text" id="grupo" class="input-modern" placeholder="Nombre completo del grupo">
+        </div>
       </div>
-      <div class="campo">
-        <label>Metodología Propuesta <span>*</span></label>
-        <select id="metodologia">
-          <option value="">— Selecciona —</option>
-          <option value="Marco Lógico">MGA / Marco Lógico (DNP Colombia)</option>
-          <option value="Erasmus+ Guide">Pautas Erasmus+ KA220</option>
-          <option value="Design Thinking">Design Thinking / UX Research</option>
-          <option value="Agile Research">Agile / Scrum for Research</option>
-          <option value="Investigación-Acción">Investigación-Acción Participativa</option>
-        </select>
+      <div class="grid-2">
+        <div class="campo">
+          <label>Investigador Principal (PI) <span>*</span></label>
+          <input type="text" id="investigador" class="input-modern" placeholder="Nombre completo">
+        </div>
+        <div class="campo">
+          <label>ID / ORCID / CVLAC</label>
+          <input type="text" id="id_investigador" class="input-modern" placeholder="orcid.org/...">
+        </div>
       </div>
-    </div>
 
-    <!-- SECCIÓN D: ÁRBOLES LÓGICOS (OPCIONAL) -->
-    <div class="panel-section-title">D. Lógica del Problema (Opcional)</div>
-    <div class="grid-2">
-      <div class="campo">
-        <label>Árbol de Problemas</label>
-        <textarea id="arbol_problemas" style="min-height: 60px;" placeholder="Causa -> Problema Central -> Efecto"></textarea>
+      <!-- SECCIÓN C: ESTRUCTURA TÉCNICA -->
+      <div class="panel-section-title">C. Herramientas y Metodología</div>
+      <div class="grid-2">
+        <div class="campo">
+          <label>Demanda / Convocatoria (Matching)</label>
+          <select id="id_demanda">
+            <option value="">— Borrador Libre —</option>
+          </select>
+          <div class="hint">Nexus validará tu idea contra este estándar específico.</div>
+        </div>
+        <div class="campo">
+          <label>Metodología Propuesta <span>*</span></label>
+          <select id="metodologia">
+            <option value="">— Selecciona —</option>
+            <option value="Marco Lógico">MGA / Marco Lógico (DNP Colombia)</option>
+            <option value="Erasmus+ Guide">Pautas Erasmus+ KA220</option>
+            <option value="Design Thinking">Design Thinking / UX Research</option>
+            <option value="Agile Research">Agile / Scrum for Research</option>
+            <option value="Investigación-Acción">Investigación-Acción Participativa</option>
+          </select>
+        </div>
       </div>
-      <div class="campo">
-        <label>Árbol de Objetivos</label>
-        <textarea id="arbol_objetivos" style="min-height: 60px;" placeholder="Fines -> Objetivo General -> Medios"></textarea>
+
+      <!-- SECCIÓN D: ÁRBOLES LÓGICOS (OPCIONAL) -->
+      <div class="panel-section-title">D. Lógica del Problema (Opcional)</div>
+      <div class="grid-2">
+        <div class="campo">
+          <label>Árbol de Problemas</label>
+          <textarea id="arbol_problemas" style="min-height: 60px;"
+            placeholder="Causa -> Problema Central -> Efecto"></textarea>
+        </div>
+        <div class="campo">
+          <label>Árbol de Objetivos</label>
+          <textarea id="arbol_objetivos" style="min-height: 60px;"
+            placeholder="Fines -> Objetivo General -> Medios"></textarea>
+        </div>
       </div>
-    </div>
 
-    <div class="acciones">
-      <button class="btn btn-acento btn-grande" onclick="evaluarIdea()">
-        Formular Propuesta Técnica →
-      </button>
-    </div>
-  </div>
-
-  <!-- PANEL 2: CLARIFICACIÓN -->
-  <div class="panel" id="panel-2">
-    <div class="panel-header"><div class="panel-icon">💬</div><div><div class="panel-titulo">Clarificación de Concepto</div><div class="panel-desc">La IA necesita un poco más de contexto para esta convocatoria.</div></div></div>
-    <div class="caja-clarificacion visible">
-      <p id="texto-pregunta"></p>
-      <textarea id="respuesta-clarificacion" placeholder="Proporciona el detalle aquí..."></textarea>
-    </div>
-    <div class="acciones">
-      <button class="btn btn-primario" onclick="irAGenerar()">Continuar Generación →</button>
-      <button class="btn btn-secundario" onclick="saltarClarificacion()">Omitir</button>
-    </div>
-  </div>
-
-  <!-- PANEL 3: GENERANDO (Fase Crítica) -->
-  <div class="panel" id="panel-3">
-    <div class="panel-header"><div class="panel-icon">⚙️</div><div><div class="panel-titulo">Formulando Documento</div><div class="panel-desc">Nexus está redactando y aplicando IA de alto nivel. Por favor no cierres esta ventana.</div></div></div>
-    <ul class="progreso-steps">
-      <li class="progreso-step" id="step-expansion"><div class="step-icon">1</div> Expansión retórica y técnica</li>
-      <li class="progreso-step" id="step-equipo"><div class="step-icon">2</div> Asignación de talento investigador</li>
-      <li class="progreso-step" id="step-pdf"><div class="step-icon">3</div> Validación y Previsualización</li>
-    </ul>
-    <div id="debug-log" style="font-size:10px; color:var(--suave); margin-top:2rem; font-family:monospace;">Esperando respuesta del servidor...</div>
-  </div>
-
-  <!-- PANEL 4: REVISIÓN Y EDICIÓN -->
-  <div class="panel" id="panel-4">
-    <div class="panel-header">
-      <div class="panel-icon">📝</div>
-      <div>
-        <div class="panel-titulo">Revisión de la Propuesta</div>
-        <div class="panel-desc">Visualiza el borrador generado. Usa el Editor IA para aplicar cambios estrictos antes de exportar.</div>
-      </div>
-    </div>
-    <div id="preview-container" class="previsualizador">Cargando previsualización...</div>
-
-    <div class="editor-ai-caja">
-      <label>✨ Editor IA Estricto: Instrucciones de Cambio</label>
-      <textarea id="edit-instructions" style="min-height:70px;" placeholder="Ej: Haz que el presupuesto total sea de 500M / Sé más descriptivo en los riesgos..."></textarea>
-      <div style="text-align:right; margin-top:10px;">
-        <button class="btn btn-primario" id="btn-editar" onclick="editarPropuesta()">Aplicar Cambios con IA</button>
+      <div class="acciones">
+        <button class="btn btn-acento btn-grande" onclick="evaluarIdea()">
+          Formular Propuesta Técnica →
+        </button>
       </div>
     </div>
 
-    <div class="caja-descarga visible" style="margin-top:2.5rem;">
-      <div class="descarga-icono">🏆</div>
-      <div class="descarga-titulo">¡Propuesta Formateada!</div>
-      <p style="font-size:13px; margin-bottom:15px;">Cuando el borrador sea de tu agrado, genera el PDF final.</p>
-      <button class="btn btn-acento btn-grande" style="width:100%; justify-content:center;" onclick="generarPdfFinal()" id="btn-final-pdf">⬇ Generar y Descargar PDF Técnico</button>
+    <!-- PANEL 2: CLARIFICACIÓN -->
+    <div class="panel" id="panel-2">
+      <div class="panel-header">
+        <div class="panel-icon">💬</div>
+        <div>
+          <div class="panel-titulo">Clarificación de Concepto</div>
+          <div class="panel-desc">La IA necesita un poco más de contexto para esta convocatoria.</div>
+        </div>
+      </div>
+      <div class="caja-clarificacion visible">
+        <p id="texto-pregunta"></p>
+        <textarea id="respuesta-clarificacion" placeholder="Proporciona el detalle aquí..."></textarea>
+      </div>
+      <div class="acciones">
+        <button class="btn btn-primario" onclick="irAGenerar()">Continuar Generación →</button>
+        <button class="btn btn-secundario" onclick="saltarClarificacion()">Omitir</button>
+      </div>
     </div>
 
-    <div style="margin-top:2.5rem;">
-      <h3 class="panel-section-title">Anexo: Consorcio Sugerido</h3>
-      <div id="lista-equipo" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;"></div>
+    <!-- PANEL 3: GENERANDO (Fase Crítica) -->
+    <div class="panel" id="panel-3">
+      <div class="panel-header">
+        <div class="panel-icon">⚙️</div>
+        <div>
+          <div class="panel-titulo">Formulando Documento</div>
+          <div class="panel-desc">Nexus está redactando y aplicando IA de alto nivel. Por favor no cierres esta ventana.
+          </div>
+        </div>
+      </div>
+      <ul class="progreso-steps">
+        <li class="progreso-step" id="step-expansion">
+          <div class="step-icon">1</div> Expansión retórica y técnica
+        </li>
+        <li class="progreso-step" id="step-equipo">
+          <div class="step-icon">2</div> Asignación de talento investigador
+        </li>
+        <li class="progreso-step" id="step-pdf">
+          <div class="step-icon">3</div> Validación y Previsualización
+        </li>
+      </ul>
+      <div id="debug-log" style="font-size:10px; color:var(--suave); margin-top:2rem; font-family:monospace;">Esperando
+        respuesta del servidor...</div>
     </div>
-    <div class="acciones"><button class="btn btn-secundario" onclick="reiniciar()">← Nueva Propuesta</button></div>
-  </div>
-</main>
 
-<footer>Project Nexus v0.6.0 · Motor de Generación de Propuestas de Investigación · 2026</footer>
+    <!-- PANEL 4: REVISIÓN Y EDICIÓN -->
+    <div class="panel" id="panel-4">
+      <div class="panel-header">
+        <div class="panel-icon">📝</div>
+        <div>
+          <div class="panel-titulo">Revisión de la Propuesta</div>
+          <div class="panel-desc">Visualiza el borrador generado. Usa el Editor IA para aplicar cambios estrictos antes
+            de exportar.</div>
+        </div>
+      </div>
+      <div id="preview-container" class="previsualizador">Cargando previsualización...</div>
 
-<script>
-const estado = {
-  idea: '', formato: '', metodologia: '',
-  facultad: '', grupo: '', investigador: '', id_investigador: '',
-  sector_tematico: '',
-  arbol_problemas: '', arbol_objetivos: '',
-  id_demanda: '', contexto_adicional: '',
-  datos_completos: null, expansion_actual: ''
-};
+      <div style="text-align:center; margin-top:20px;">
+        <button class="btn btn-secundario btn-grande" style="width:100%;" onclick="abrirModoManual()">
+          ✏️ Mostrar y Editar por Secciones (Modo Manual)
+        </button>
+      </div>
 
-async function cargarFormatos() {
-  try {
-    const res = await fetch('/formatos');
-    const data = await res.json();
-    const sel = document.getElementById('formato');
-    sel.innerHTML = '<option value="">— Selecciona —</option>';
-    data.formatos.forEach(f => {
-      const opt = document.createElement('option'); opt.value = f.id; opt.textContent = f.nombre; sel.appendChild(opt);
-    });
-  } catch(e) { console.error("Error formatos:", e); }
-}
+      <div class="editor-ai-caja">
+        <label>✨ Editor IA Estricto: Instrucciones de Cambio</label>
+        <textarea id="edit-instructions" style="min-height:70px;"
+          placeholder="Ej: Haz que el presupuesto total sea de 500M / Sé más descriptivo en los riesgos..."></textarea>
+        <div style="text-align:right; margin-top:10px;">
+          <button class="btn btn-primario" id="btn-editar" onclick="editarPropuesta()">Aplicar Cambios con IA</button>
+        </div>
+      </div>
 
-async function cargarDemandas() {
-  try {
-    const res = await fetch('/demands');
-    const data = await res.json();
-    const sel = document.getElementById('id_demanda');
-    data.demandas.forEach(d => {
-      const opt = document.createElement('option'); opt.value = d.id; opt.textContent = d.nombre; sel.appendChild(opt);
-    });
-  } catch(e) { console.error("Error demandas:", e); }
-}
+      <div class="caja-descarga visible" style="margin-top:2.5rem;">
+        <div class="descarga-icono">🏆</div>
+        <div class="descarga-titulo">¡Propuesta Formateada!</div>
+        <p style="font-size:13px; margin-bottom:15px;">Cuando el borrador sea de tu agrado, genera el PDF final.</p>
+        <button class="btn btn-acento btn-grande" style="width:100%; justify-content:center;"
+          onclick="generarPdfFinal()" id="btn-final-pdf">⬇ Generar y Descargar PDF Técnico</button>
+      </div>
 
-function irAPaso(n) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('visible'));
-  const target = document.getElementById(`panel-${n}`);
-  if (target) target.classList.add('visible');
-  
-  document.querySelectorAll('.paso-indicador').forEach((ind, i) => {
-    ind.classList.remove('activo', 'completado');
-    if (i + 1 < n) ind.classList.add('completado');
-    if (i + 1 === n) ind.classList.add('activo');
-  });
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+      <div style="margin-top:2.5rem;">
+        <h3 class="panel-section-title">Anexo: Consorcio Sugerido</h3>
+        <div id="lista-equipo" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;"></div>
+      </div>
+      <div class="acciones"><button class="btn btn-secundario" onclick="reiniciar()">← Nueva Propuesta</button></div>
+    </div>
 
-async function evaluarIdea() {
-  const fields = ['idea','formato','metodologia','facultad','grupo','investigador','sector_tematico'];
-  let error = false;
-  fields.forEach(f => {
-    const val = document.getElementById(f).value.trim();
-    if (!val) error = true;
-    estado[f] = val;
-  });
+    <!-- PANEL 5: EDICIÓN MANUAL -->
+    <div class="panel" id="panel-5">
+      <div class="panel-header">
+        <div class="panel-icon">🔧</div>
+        <div>
+          <div class="panel-titulo">Edición Manual por Secciones</div>
+          <div class="panel-desc">Visualiza y edita individualmente cada bloque generado.</div>
+        </div>
+      </div>
 
-  if (error) {
-    const errEl = document.getElementById('error-1');
-    errEl.textContent = "Por favor completa todos los campos marcados con (*) para continuar.";
-    errEl.classList.add('visible');
-    return;
-  }
-  
-  estado.id_investigador = document.getElementById('id_investigador').value;
-  estado.id_demanda = document.getElementById('id_demanda').value;
-  estado.arbol_problemas = document.getElementById('arbol_problemas').value;
-  estado.arbol_objetivos = document.getElementById('arbol_objetivos').value;
+      <div id="manual-editor-container"></div>
 
-  const btn = event.currentTarget;
-  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div> Evaluando...';
+      <div class="acciones" style="margin-top: 2rem;">
+        <button class="btn btn-primario btn-grande" onclick="guardarEdicionManual()">💾 Guardar Cambios y Volver</button>
+        <button class="btn btn-secundario" onclick="irAPaso(4)">Cancelar</button>
+      </div>
+    </div>
+  </main>
 
-  try {
-    const res = await fetch('/evaluar', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ idea: estado.idea, formato: estado.formato })
-    });
-    const data = await res.json();
-    if (!data.lista_para_expandir && data.pregunta) {
-      document.getElementById('texto-pregunta').textContent = data.pregunta;
-      irAPaso(2);
-    } else {
+  <footer>Project Nexus v0.6.0 · Motor de Generación de Propuestas de Investigación · 2026</footer>
+
+  <script>
+    const estado = {
+      idea: '', formato: '', metodologia: '',
+      facultad: '', grupo: '', investigador: '', id_investigador: '',
+      sector_tematico: '',
+      arbol_problemas: '', arbol_objetivos: '',
+      id_demanda: '', contexto_adicional: '',
+      datos_completos: null, expansion_actual: ''
+    };
+
+    async function cargarFormatos() {
+      try {
+        const res = await fetch('/formatos');
+        const data = await res.json();
+        const sel = document.getElementById('formato');
+        sel.innerHTML = '<option value="">— Selecciona —</option>';
+        data.formatos.forEach(f => {
+          const opt = document.createElement('option'); opt.value = f.id; opt.textContent = f.nombre; sel.appendChild(opt);
+        });
+      } catch (e) { console.error("Error formatos:", e); }
+    }
+
+    async function cargarDemandas() {
+      try {
+        const res = await fetch('/demands');
+        const data = await res.json();
+        const sel = document.getElementById('id_demanda');
+        data.demandas.forEach(d => {
+          const opt = document.createElement('option'); opt.value = d.id; opt.textContent = d.nombre; sel.appendChild(opt);
+        });
+      } catch (e) { console.error("Error demandas:", e); }
+    }
+
+    function irAPaso(n) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('visible'));
+      const target = document.getElementById(`panel-${n}`);
+      if (target) target.classList.add('visible');
+
+      document.querySelectorAll('.paso-indicador').forEach((ind, i) => {
+        ind.classList.remove('activo', 'completado');
+        if (i + 1 < n) ind.classList.add('completado');
+        if (i + 1 === n) ind.classList.add('activo');
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function evaluarIdea() {
+      const fields = ['idea', 'formato', 'metodologia', 'facultad', 'grupo', 'investigador', 'sector_tematico'];
+      let error = false;
+      fields.forEach(f => {
+        const val = document.getElementById(f).value.trim();
+        if (!val) error = true;
+        estado[f] = val;
+      });
+
+      if (error) {
+        const errEl = document.getElementById('error-1');
+        errEl.textContent = "Por favor completa todos los campos marcados con (*) para continuar.";
+        errEl.classList.add('visible');
+        return;
+      }
+
+      estado.id_investigador = document.getElementById('id_investigador').value;
+      estado.id_demanda = document.getElementById('id_demanda').value;
+      estado.arbol_problemas = document.getElementById('arbol_problemas').value;
+      estado.arbol_objetivos = document.getElementById('arbol_objetivos').value;
+
+      const btn = event.currentTarget;
+      btn.disabled = true; btn.innerHTML = '<div class="spinner"></div> Evaluando...';
+
+      try {
+        const res = await fetch('/evaluar', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ idea: estado.idea, formato: estado.formato })
+        });
+        const data = await res.json();
+        if (!data.lista_para_expandir && data.pregunta) {
+          document.getElementById('texto-pregunta').textContent = data.pregunta;
+          irAPaso(2);
+        } else {
+          irAPaso(3); generarDocumento();
+        }
+      } catch (e) { alert("Error de comunicación inicial."); }
+      finally { btn.disabled = false; btn.innerHTML = 'Formular Propuesta Técnica →'; }
+    }
+
+    function irAGenerar() {
+      estado.contexto_adicional = document.getElementById('respuesta-clarificacion').value.trim();
       irAPaso(3); generarDocumento();
     }
-  } catch(e) { alert("Error de comunicación inicial."); }
-  finally { btn.disabled = false; btn.innerHTML = 'Formular Propuesta Técnica →'; }
-}
+    function saltarClarificacion() { estado.contexto_adicional = ''; irAPaso(3); generarDocumento(); }
 
-function irAGenerar() {
-  estado.contexto_adicional = document.getElementById('respuesta-clarificacion').value.trim();
-  irAPaso(3); generarDocumento();
-}
-function saltarClarificacion() { estado.contexto_adicional = ''; irAPaso(3); generarDocumento(); }
+    async function generarDocumento() {
+      const steps = ['step-expansion', 'step-equipo', 'step-pdf'];
+      let stepIdx = 0;
+      const debugLog = document.getElementById('debug-log');
 
-async function generarDocumento() {
-  const steps = ['step-expansion', 'step-equipo', 'step-pdf'];
-  let stepIdx = 0;
-  const debugLog = document.getElementById('debug-log');
-  
-  const timer = setInterval(() => {
-    if (stepIdx > 0) {
-      const prev = document.getElementById(steps[stepIdx-1]);
-      prev.classList.add('listo'); prev.classList.remove('activo');
-      prev.querySelector('.step-icon').textContent = '✓';
+      const timer = setInterval(() => {
+        if (stepIdx > 0) {
+          const prev = document.getElementById(steps[stepIdx - 1]);
+          prev.classList.add('listo'); prev.classList.remove('activo');
+          prev.querySelector('.step-icon').textContent = '✓';
+        }
+        if (stepIdx < steps.length) {
+          document.getElementById(steps[stepIdx]).classList.add('activo');
+          stepIdx++;
+        } else { clearInterval(timer); }
+      }, 7000);
+
+      try {
+        debugLog.textContent = "[Info] Enviando payload complejo a /generar-documento..."; console.log("Payload:", estado);
+        const res = await fetch('/generar-documento', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(estado)
+        });
+
+        if (!res.ok) throw new Error(`Servidor retorno error ${res.status}`);
+
+        const data = await res.json();
+        console.log("Respuesta recibida:", data);
+
+        if (!data.success) {
+          clearInterval(timer);
+          debugLog.textContent = "[ERROR] Servidor reportó: " + data.error;
+          alert("Error en la IA: " + data.error);
+          return;
+        }
+
+        debugLog.textContent = "[OK] Datos recibidos con éxito.";
+
+        clearInterval(timer);
+        // Marcar todos como listos
+        steps.forEach(s => {
+          const el = document.getElementById(s);
+          el.classList.add('listo'); el.classList.remove('activo');
+          el.querySelector('.step-icon').textContent = '✓';
+        });
+
+        estado.datos_completos = data;
+        estado.expansion_actual = data.texto_previsualizacion || "Error: No se recibió texto de previsualización.";
+
+        mostrarPrevisualizacion();
+        renderizarEquipo(data.equipo?.equipo_sugerido || []);
+        setTimeout(() => irAPaso(4), 1000);
+
+      } catch (e) {
+        clearInterval(timer);
+        debugLog.textContent = "[ERROR] " + e.message;
+        alert("Error crítico durante la formulación: " + e.message);
+      }
     }
-    if (stepIdx < steps.length) {
-      document.getElementById(steps[stepIdx]).classList.add('activo');
-      stepIdx++;
-    } else { clearInterval(timer); }
-  }, 7000);
 
-  try {
-    debugLog.textContent = "[Info] Enviando payload complejo a /generar-documento..."; console.log("Payload:", estado);
-    const res = await fetch('/generar-documento', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(estado)
-    });
-    
-    if (!res.ok) throw new Error(`Servidor retorno error ${res.status}`);
-    
-    const data = await res.json();
-    console.log("Respuesta recibida:", data);
-    
-    if (!data.success) {
-      clearInterval(timer);
-      debugLog.textContent = "[ERROR] Servidor reportó: " + data.error;
-      alert("Error en la IA: " + data.error);
-      return;
+    function mostrarPrevisualizacion() {
+      const container = document.getElementById('preview-container');
+      let text = estado.expansion_actual || "";
+
+      // Limpieza robusta inicial
+      text = text.replace(/```markdown/g, '').replace(/```/g, '');
+
+      let html = text
+        .replace(/^### (.*$)/gim, '<h3 style="color:var(--azul); border-bottom:1px solid #eee;">$1</h3>')
+        .replace(/^## (.*$)/gim, '<h2 style="color:var(--azul);">$1</h2>')
+        .replace(/^# (.*$)/gim, '<h1 style="color:var(--azul);">$1</h1>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/^\- (.*$)/gim, '<li>$1</li>')
+        .replace(/\n\n/g, '<p style="margin-bottom:1rem;"></p>')
+        .replace(/\n/g, '<br>');
+
+      container.innerHTML = html;
     }
-    
-    debugLog.textContent = "[OK] Datos recibidos con éxito.";
-    
-    clearInterval(timer);
-    // Marcar todos como listos
-    steps.forEach(s => {
-      const el = document.getElementById(s);
-      el.classList.add('listo'); el.classList.remove('activo');
-      el.querySelector('.step-icon').textContent = '✓';
-    });
 
-    estado.datos_completos = data;
-    estado.expansion_actual = data.texto_previsualizacion || "Error: No se recibió texto de previsualización.";
-    
-    mostrarPrevisualizacion();
-    renderizarEquipo(data.equipo?.equipo_sugerido || []);
-    setTimeout(() => irAPaso(4), 1000);
-
-  } catch(e) {
-    clearInterval(timer);
-    debugLog.textContent = "[ERROR] " + e.message;
-    alert("Error crítico durante la formulación: " + e.message);
-  }
-}
-
-function mostrarPrevisualizacion() {
-  const container = document.getElementById('preview-container');
-  let text = estado.expansion_actual || "";
-  
-  // Limpieza robusta inicial
-  text = text.replace(/```markdown/g, '').replace(/```/g, '');
-
-  let html = text
-    .replace(/^### (.*$)/gim, '<h3 style="color:var(--azul); border-bottom:1px solid #eee;">$1</h3>')
-    .replace(/^## (.*$)/gim, '<h2 style="color:var(--azul);">$1</h2>')
-    .replace(/^# (.*$)/gim, '<h1 style="color:var(--azul);">$1</h1>')
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/^\- (.*$)/gim, '<li>$1</li>')
-    .replace(/\n\n/g, '<p style="margin-bottom:1rem;"></p>')
-    .replace(/\n/g, '<br>');
-
-  container.innerHTML = html;
-}
-
-async function editarPropuesta() {
-  const instr = document.getElementById('edit-instructions').value.trim();
-  if (!instr) return alert("Escribe las instrucciones de edición.");
-  const btn = document.getElementById('btn-editar');
-  btn.disabled = true; btn.innerHTML = '✨ Procesando edición...';
-  try {
-    const res = await fetch('/editar-propuesta', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ texto_actual: estado.expansion_actual, instrucciones: instr, formato: estado.formato })
-    });
-    const data = await res.json();
-    if (data.texto_editado) {
-      estado.expansion_actual = data.texto_editado;
-      mostrarPrevisualizacion();
-      document.getElementById('edit-instructions').value = '';
-      document.getElementById('preview-container').scrollTop = 0;
-      alert("✨ ¡Propuesta Editada con Éxito con IA! Los cambios ya se reflejan aquí abajo y en tu PDF final.");
-    } else {
-      alert("La IA no devolvió texto. Intenta de nuevo.");
+    async function editarPropuesta() {
+      const instr = document.getElementById('edit-instructions').value.trim();
+      if (!instr) return alert("Escribe las instrucciones de edición.");
+      const btn = document.getElementById('btn-editar');
+      btn.disabled = true; btn.innerHTML = '✨ Procesando edición...';
+      try {
+        const res = await fetch('/editar-propuesta', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ texto_actual: estado.expansion_actual, instrucciones: instr, formato: estado.formato })
+        });
+        const data = await res.json();
+        if (data.texto_editado) {
+          estado.expansion_actual = data.texto_editado;
+          mostrarPrevisualizacion();
+          document.getElementById('edit-instructions').value = '';
+          document.getElementById('preview-container').scrollTop = 0;
+          alert("✨ ¡Propuesta Editada con Éxito con IA! Los cambios ya se reflejan aquí abajo y en tu PDF final.");
+        } else {
+          alert("La IA no devolvió texto. Intenta de nuevo.");
+        }
+      } catch (e) { alert("Error al conectar con el Editor IA."); }
+      finally { btn.disabled = false; btn.innerHTML = 'Aplicar Cambios con IA'; }
     }
-  } catch(e) { alert("Error al conectar con el Editor IA."); }
-  finally { btn.disabled = false; btn.innerHTML = 'Aplicar Cambios con IA'; }
-}
 
-async function generarPdfFinal() {
-  const btn = document.getElementById('btn-final-pdf');
-  btn.disabled = true; btn.innerHTML = '⏳ Compilando PDF...';
-  try {
-    const payload = {
-      ...estado.datos_completos.datos_expansion,
-      equipo: estado.datos_completos.equipo,
-      match_evaluacion: estado.datos_completos.match_evaluacion,
-      expansion: (estado.expansion_actual && !estado.expansion_actual.startsWith("Error")) ? estado.expansion_actual : (estado.datos_completos.texto_previsualizacion || ""),
-      idea_original: estado.idea,
-      formato_nombre: estado.datos_completos.formato_nombre
-    };
-    console.log("[Nexus] Payload para PDF:", payload);
-    const res = await fetch('/generar-pdf-final', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const data = await res.json();
-    if (data.pdf_url) {
-      window.location.href = data.pdf_url;
-    } else if (data.error) {
-      alert("⚠️ Error del Servidor: " + data.error);
-    } else {
-      alert("No se recibió la URL del PDF. Intenta de nuevo.");
+    async function generarPdfFinal() {
+      const btn = document.getElementById('btn-final-pdf');
+      btn.disabled = true; btn.innerHTML = '⏳ Compilando PDF...';
+      try {
+        const payload = {
+          ...estado.datos_completos.datos_expansion,
+          equipo: estado.datos_completos.equipo,
+          match_evaluacion: estado.datos_completos.match_evaluacion,
+          expansion: (estado.expansion_actual && !estado.expansion_actual.startsWith("Error")) ? estado.expansion_actual : (estado.datos_completos.texto_previsualizacion || ""),
+          idea_original: estado.idea,
+          formato_nombre: estado.datos_completos.formato_nombre
+        };
+        console.log("[Nexus] Payload para PDF:", payload);
+        const res = await fetch('/generar-pdf-final', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.pdf_url) {
+          window.location.href = data.pdf_url;
+        } else if (data.error) {
+          alert("⚠️ Error del Servidor: " + data.error);
+        } else {
+          alert("No se recibió la URL del PDF. Intenta de nuevo.");
+        }
+      } catch (e) { alert("Error al generar PDF final."); }
+      finally { btn.disabled = false; btn.innerHTML = '⬇ Generar y Descargar PDF Técnico'; }
     }
-  } catch(e) { alert("Error al generar PDF final."); }
-  finally { btn.disabled = false; btn.innerHTML = '⬇ Generar y Descargar PDF Técnico'; }
-}
 
-function renderizarEquipo(equipo) {
-  const contenedor = document.getElementById('lista-equipo');
-  contenedor.innerHTML = equipo.map(m => `
+    function renderizarEquipo(equipo) {
+      const contenedor = document.getElementById('lista-equipo');
+      contenedor.innerHTML = equipo.map(m => `
     <div class="tarjeta-investigador" style="padding: 0.8rem; border-style: dashed; opacity: 0.8;">
       <div style="flex:1">
         <div class="inv-nombre" style="font-size: 13px;">${m.perfil_completo?.nombre || 'IP'}</div>
@@ -453,55 +522,112 @@ function renderizarEquipo(equipo) {
       <div class="inv-dedicacion" style="font-size: 1.1rem; color: var(--azul-med);">${m.dedicacion_porcentaje}%</div>
     </div>
   `).join('');
-}
+    }
 
-// ── IA Mini Refinement ──
-async function aiAssist(id) {
-  const el = document.getElementById(id);
-  if (!el.value.trim()) return alert("Escribe algo para que Nexus pueda refinarlo.");
-  const btn = event.currentTarget; btn.disabled = true; btn.innerHTML = '✨...';
-  try {
-    const res = await fetch('/refinar-texto', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({texto: el.value, objetivo: "profesionalizar académicamente"})
-    });
-    const d = await res.json(); if (d.texto_refinado) el.value = d.texto_refinado;
-  } finally { btn.disabled = false; btn.innerHTML = '✨ Refinar con IA'; }
-}
+    // ── IA Mini Refinement ──
+    async function aiAssist(id) {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) return alert("Escribe algo para que Nexus pueda refinarlo.");
+      const btn = event.currentTarget; btn.disabled = true; btn.innerHTML = '✨...';
+      try {
+        const res = await fetch('/refinar-texto', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ texto: el.value, objetivo: "profesionalizar académicamente" })
+        });
+        const d = await res.json(); if (d.texto_refinado) el.value = d.texto_refinado;
+      } finally { btn.disabled = false; btn.innerHTML = '✨ Refinar con IA'; }
+    }
 
-// ── Audio Multi-Modal ──
-let mediaRecorder; let audioChunks = [];
-async function toggleRecording() {
-  const btn = document.getElementById('record-btn');
-  if (!mediaRecorder || mediaRecorder.state === 'inactive') {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorder = new MediaRecorder(stream); audioChunks = [];
-      mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-      mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
-        const formData = new FormData(); formData.append('file', audioBlob, 'rec.mp3');
-        btn.innerHTML = '⌛';
-        const res = await fetch('/audio-to-idea', { method: 'POST', body: formData });
-        const d = await res.json(); if (d.transcripcion) document.getElementById('idea').value = d.transcripcion;
-        btn.innerHTML = '🎤'; btn.classList.remove('active');
-      };
-      mediaRecorder.start(); btn.innerHTML = '🛑'; btn.classList.add('active');
-    } catch(e) { alert("Permiso de micrófono denegado."); }
-  } else { mediaRecorder.stop(); mediaRecorder.stream.getTracks().forEach(t=>t.stop()); }
-}
+    // ── Audio Multi-Modal ──
+    let mediaRecorder; let audioChunks = [];
+    async function toggleRecording() {
+      const btn = document.getElementById('record-btn');
+      if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream); audioChunks = [];
+          mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+          mediaRecorder.onstop = async () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
+            const formData = new FormData(); formData.append('file', audioBlob, 'rec.mp3');
+            btn.innerHTML = '⌛';
+            const res = await fetch('/audio-to-idea', { method: 'POST', body: formData });
+            const d = await res.json(); if (d.transcripcion) document.getElementById('idea').value = d.transcripcion;
+            btn.innerHTML = '🎤'; btn.classList.remove('active');
+          };
+          mediaRecorder.start(); btn.innerHTML = '🛑'; btn.classList.add('active');
+        } catch (e) { alert("Permiso de micrófono denegado."); }
+      } else { mediaRecorder.stop(); mediaRecorder.stream.getTracks().forEach(t => t.stop()); }
+    }
 
-function abrirModalTranscripcion() {
-  const t = prompt("Pega tu transcripción aquí:");
-  if (t) {
-    const ideaEl = document.getElementById('idea');
-    fetch('/transcription-to-idea', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({transcripcion:t}) })
-    .then(r=>r.json()).then(d => { ideaEl.value = (d.datos_extraidos?.titulo_proyecto ? "Título: "+d.datos_extraidos.titulo_proyecto+"\n"+(d.datos_extraidos.resumen || "") : t); });
-  }
-}
+    function abrirModalTranscripcion() {
+      const t = prompt("Pega tu transcripción aquí:");
+      if (t) {
+        const ideaEl = document.getElementById('idea');
+        fetch('/transcription-to-idea', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ transcripcion: t }) })
+          .then(r => r.json()).then(d => { ideaEl.value = (d.datos_extraidos?.titulo_proyecto ? "Título: " + d.datos_extraidos.titulo_proyecto + "\n" + (d.datos_extraidos.resumen || "") : t); });
+      }
+    }
 
-function reiniciar() { window.location.reload(); }
-cargarFormatos(); cargarDemandas();
-</script>
+    function abrirModoManual() {
+      const container = document.getElementById('manual-editor-container');
+      let text = estado.expansion_actual || "";
+      text = text.replace(/```markdown/g, '').replace(/```/g, '');
+
+      if (!text.includes("### ")) {
+        container.innerHTML = `<div class="alerta alerta-error visible">No se detectaron secciones estructuradas. Tu formato puede no ser compatible con edición por secciones.</div>`;
+      } else {
+        const secciones = text.split("### ").filter(s => s.trim() !== "");
+        let html = "";
+        secciones.forEach((sec, idx) => {
+          let lines = sec.trim().split("\n");
+          let tituloRaw = lines.shift() || "Sección";
+          let content = lines.join("\n").trim();
+          let numStr = (idx + 1).toString().padStart(2, '0');
+
+          html += `
+            <div class="accordion-item active">
+              <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="acc-num">${numStr}</span>
+                <div class="acc-title-wrap">
+                  <span class="acc-title">${tituloRaw.replace(/[*#]/g, '').trim()}</span>
+                  <span class="acc-desc">Clic para expandir/colapsar editor</span>
+                </div>
+              </div>
+              <div class="accordion-body">
+                <input type="hidden" class="sec-titulo" value="${tituloRaw}">
+                <textarea class="sec-contenido" style="width:100%; min-height:200px; font-family:monospace; font-size:14px; padding:12px; background:#0d1117; color:#c9d1d9; border:1px solid #30363d; border-radius:6px; resize:vertical; outline:none;" onfocus="this.style.borderColor='#58a6ff'" onblur="this.style.borderColor='#30363d'">${content}</textarea>
+              </div>
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+      }
+      irAPaso(5);
+    }
+
+    function guardarEdicionManual() {
+      const container = document.getElementById('manual-editor-container');
+      const items = container.querySelectorAll('.accordion-item');
+      if (items.length === 0) { irAPaso(4); return; }
+
+      let newMarkdown = "";
+      items.forEach(item => {
+        const titulo = item.querySelector('.sec-titulo').value;
+        const content = item.querySelector('.sec-contenido').value;
+        newMarkdown += "### " + titulo + "\n" + content + "\n\n";
+      });
+
+      estado.expansion_actual = newMarkdown.trim();
+      mostrarPrevisualizacion();
+      irAPaso(4);
+    }
+
+    function toggleAccordion(el) { el.parentElement.classList.toggle('active'); }
+
+    function reiniciar() { window.location.reload(); }
+    cargarFormatos(); cargarDemandas();
+  </script>
 </body>
+
 </html>
