@@ -255,6 +255,74 @@ async def audio_to_idea(file: UploadFile = File(...)):
         if os.path.exists(temp_path):
             os.remove(temp_path)
 
+@app.post("/transcribir-audio")
+async def transcribir_audio(file: UploadFile = File(...)):
+    """
+    Transcribión de audio gratuita usando Google Speech API vía SpeechRecognition (sin API key).
+    """
+    import speech_recognition as sr
+    import tempfile, os
+    
+    try:
+        # Leer el audio en memoria
+        audio_bytes = await file.read()
+        print(f"[Nexus] Audio recibido: {len(audio_bytes)} bytes")
+        
+        if len(audio_bytes) == 0:
+            return {"transcripcion": "", "error": "El archivo de audio está vacío"}
+        
+        # Detectar formato por content_type o nombre de archivo
+        fname = file.filename or 'audio.webm'
+        ext = os.path.splitext(fname)[1].lower() or '.webm'
+        content_type = file.content_type or 'audio/webm'
+        if 'wav' in content_type or ext == '.wav': audio_fmt = 'wav'
+        elif 'ogg' in content_type or ext == '.ogg': audio_fmt = 'ogg'
+        else: audio_fmt = 'webm'
+        
+        with tempfile.NamedTemporaryFile(suffix=f'.{audio_fmt}', delete=False) as tmp:
+            tmp.write(audio_bytes)
+            tmp_src = tmp.name
+        
+        tmp_wav = tmp_src.rsplit('.', 1)[0] + '.wav'
+        
+        try:
+            if audio_fmt == 'wav':
+                tmp_wav = tmp_src  # ya es wav, no convertir
+            else:
+                # Configurar pydub con ffmpeg de imageio
+                import imageio_ffmpeg
+                from pydub import AudioSegment
+                ffmpeg_path = imageio_ffmpeg.get_ffmpeg_exe()
+                AudioSegment.converter = ffmpeg_path
+                print(f"[Nexus] Convirtiendo {audio_fmt} -> wav usando {ffmpeg_path}")
+                audio_seg = AudioSegment.from_file(tmp_src, format=audio_fmt)
+                audio_seg.export(tmp_wav, format='wav')
+            
+            # Transcribir con Google Speech-to-Text gratuito
+            recognizer = sr.Recognizer()
+            with sr.AudioFile(tmp_wav) as source:
+                audio_data = recognizer.record(source)
+            
+            texto = recognizer.recognize_google(audio_data, language="es-ES")
+            print(f"[Nexus] Transcripción exitosa: {texto[:80]}")
+            return {"transcripcion": texto}
+            
+        except sr.UnknownValueError:
+            return {"transcripcion": "", "error": "No se pudo entender el audio. Intenta hablar más claro."}
+        except sr.RequestError as e:
+            return {"transcripcion": "", "error": f"Error en Google Speech API: {e}"}
+        finally:
+            for f in [tmp_src, tmp_wav]:
+                if os.path.exists(f) and f != tmp_src: os.remove(f)
+            if os.path.exists(tmp_src): os.remove(tmp_src)
+
+                
+    except ImportError:
+        return {"transcripcion": "", "error": "Librerías de audio no instaladas. Ejecuta: pip install SpeechRecognition pydub"}
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return {"transcripcion": "", "error": f"Error interno: {str(e)}"}
+
 @app.post("/transcription-to-idea")
 async def transcription_to_idea(data: dict):
     """

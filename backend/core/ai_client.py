@@ -1,6 +1,7 @@
 import os
 import requests
 import json
+import time
 from config import OPENROUTER_API_KEY, CEREBRAS_API_KEY, AI_MODEL, AI_PROVIDER
 
 def ask_ai(prompt: str, system_prompt: str = "Eres un experto en formulación de proyectos de I+D+i.") -> str:
@@ -38,26 +39,41 @@ def ask_ai(prompt: str, system_prompt: str = "Eres un experto en formulación de
         "max_tokens": 16384
     }
 
-    try:
-        print(f"[Nexus] Consultando a {AI_PROVIDER} ({AI_MODEL})...")
-        response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=60)
-        
-        if response.status_code == 402:
-            return f"Error: {AI_PROVIDER} solicita pago (402). El saldo de la cuenta se ha agotado."
-        
-        response.raise_for_status()
-        data = response.json()
-        
-        if 'choices' in data and len(data['choices']) > 0:
-            return data['choices'][0]['message']['content']
-        else:
-            return f"Error: Respuesta inesperada de {AI_PROVIDER}: {json.dumps(data)}"
+    max_retries = 3
+    base_wait = 2
+
+    for attempt in range(max_retries):
+        try:
+            print(f"[Nexus] Consultando a {AI_PROVIDER} ({AI_MODEL})... Intento {attempt+1}/{max_retries}")
+            response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=60)
             
-    except Exception as e:
-        print(f"Error en {AI_PROVIDER}: {str(e)}")
-        if hasattr(e, 'response') and e.response is not None:
-             print(f"Detalle error: {e.response.text}")
-        return f"Error al conectar con la IA ({AI_PROVIDER}): {str(e)}"
+            if response.status_code == 402:
+                return f"Error: {AI_PROVIDER} solicita pago (402). El saldo de la cuenta se ha agotado."
+                
+            if response.status_code == 429:
+                wait_time = base_wait ** (attempt + 1)
+                print(f"[Nexus] Límite de cuota (429) alcanzado en {AI_PROVIDER}. Esperando {wait_time}s...")
+                time.sleep(wait_time)
+                continue
+            
+            response.raise_for_status()
+            data = response.json()
+            
+            if 'choices' in data and len(data['choices']) > 0:
+                return data['choices'][0]['message']['content']
+            else:
+                return f"Error: Respuesta inesperada de {AI_PROVIDER}: {json.dumps(data)}"
+                
+        except requests.exceptions.RequestException as e:
+            print(f"Error de red en {AI_PROVIDER} intento {attempt+1}: {str(e)}")
+            if attempt < max_retries - 1:
+                time.sleep(base_wait ** (attempt + 1))
+                continue
+            if hasattr(e, 'response') and e.response is not None:
+                 print(f"Detalle error: {e.response.text}")
+            return f"Error al conectar con la IA ({AI_PROVIDER}): {str(e)}"
+    
+    return f"Error crítico: Imposible conectar con {AI_PROVIDER} tras {max_retries} intentos (Rate Limit o Caída)."
 
 def ask_ai_multimodal(prompt: str, audio_base64: str = None, audio_mime: str = "audio/mpeg") -> str:
     """

@@ -1,5 +1,6 @@
 from core.ai_client import ask_ai
 from formats.format_registry import get_formato
+import time
 
 SECTIONAL_PROMPT_TEMPLATE = """
 Eres un experto de élite en formulación de proyectos de I+D+i. 
@@ -78,6 +79,9 @@ def expand_seed_idea(idea: str, metodologia: str, formato: str, metadata: dict =
         
         # Limitar contexto acumulado para no saturar la ventana de contexto de la IA
         contexto_acumulado += f"\n\nResumen de {sec['nombre']}: {contenido_sec[:1200]}..."
+        
+        # Pacing estricto para evitar bloqueos por Rate Limit de la capa gratuita (Cerebras)
+        time.sleep(4)
 
     propuesta_final_cruda = "\n\n".join(propuesta_partes)
 
