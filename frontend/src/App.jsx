@@ -22,13 +22,10 @@ export default function App() {
   const [genSteps, setGenSteps] = useState([false, false, false]);
   
   // Advanced Features State
-  const [isRecording, setIsRecording] = useState(false);
   const [isRefining, setIsRefining] = useState(false);
   const [manualMode, setManualMode] = useState(false);
   const [manualSections, setManualSections] = useState([]);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
-  const mediaRecorderRef = useRef(null);
-  const audioChunksRef = useRef([]);
 
   useEffect(() => {
     fetch('/formatos').then(r => r.json()).then(d => setFormatos(d.formatos || [])).catch(() => {});
@@ -37,65 +34,6 @@ export default function App() {
 
   const handleChange = (e) => setEstado({ ...estado, [e.target.name]: e.target.value });
 
-  // 1. Dictado por voz - MediaRecorder + Backend
-  const startRecording = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') 
-        ? 'audio/webm;codecs=opus' 
-        : MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/ogg';
-      
-      const recorder = new MediaRecorder(stream, { mimeType });
-      const chunks = [];
-      recorder.ondataavailable = (e) => { if (e.data.size > 0) chunks.push(e.data); };
-      
-      recorder.onstop = async () => {
-        stream.getTracks().forEach(t => t.stop());
-        const audioBlob = new Blob(chunks, { type: mimeType });
-        setIsRefining(true);
-        try {
-          const formData = new FormData();
-          formData.append('file', audioBlob, 'audio.webm');
-          const res = await fetch('/transcribir-audio', { method: 'POST', body: formData });
-          const text = await res.text();
-          if (!text || !text.trim()) { alert('El servidor no respondió. Verifica el backend.'); return; }
-          const d = JSON.parse(text);
-          if (d.transcripcion) setEstado(prev => ({ ...prev, idea: (prev.idea ? prev.idea + ' ' : '') + d.transcripcion }));
-          else if (d.error) alert('Error en transcripción: ' + d.error);
-        } catch(err) { alert('Error: ' + err.message); }
-        finally { setIsRefining(false); }
-      };
-      
-      recorder.start();
-      mediaRecorderRef.current = recorder;
-      setIsRecording(true);
-      setTimeout(() => stopRecording(), 60000); // Auto-stop 60s
-    } catch(err) { alert('Error micrófono: ' + err.message); }
-  };
-
-  const stopRecording = () => {
-    if (mediaRecorderRef.current) {
-      mediaRecorderRef.current.stop();
-      mediaRecorderRef.current = null;
-    }
-    setIsRecording(false);
-  };
-
-  // 2. Transcription to Idea
-  const pasteTranscription = async () => {
-    const t = prompt("Pega tu transcripción aquí:");
-    if (!t) return;
-    setIsRefining(true);
-    try {
-      const res = await fetch('/transcription-to-idea', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ transcripcion: t })
-      });
-      const d = await res.json();
-      const txt = d.datos_extraidos?.titulo_proyecto ? `Título: ${d.datos_extraidos.titulo_proyecto}\n${d.datos_extraidos.resumen || ''}` : t;
-      setEstado(prev => ({ ...prev, idea: txt }));
-    } finally { setIsRefining(false); }
-  };
 
   // 3. AI Refine
   const aiAssist = async () => {
