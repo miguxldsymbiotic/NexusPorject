@@ -165,7 +165,7 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <header className="glass-panel" style={{ borderRadius: 0, margin: 0 }}>
+      <header style={{ borderRadius: 0, margin: 0 }}>
         <div className="logo-wrap">
           <div className="logo-icon">N</div>
           <div className="logo-text"><strong>Project Nexus</strong><span>Motor React</span></div>
