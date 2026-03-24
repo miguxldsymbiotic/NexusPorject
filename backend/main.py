@@ -56,7 +56,8 @@ class RefineRequest(BaseModel):
     texto: str
     objetivo: Optional[str] = "profesionalizar"
 
-# Servir archivos estáticos
+# Servir archivos estáticos generados por Vite
+app.mount("/assets", StaticFiles(directory="static/assets"), name="assets")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/app", response_class=HTMLResponse)
@@ -65,11 +66,15 @@ def frontend():
     with open("static/index.html", "r", encoding="utf-8") as f:
         return f.read()
 
-@app.get("/")
+@app.api_route("/", methods=["GET", "HEAD"])
 def root():
     """Redirige o sirve la app directamente desde la raíz."""
     with open("static/index.html", "r", encoding="utf-8") as f:
         return HTMLResponse(content=f.read())
+
+@app.get("/healthz")
+def healthz():
+    return {"status": "ok"}
 
 @app.get("/formatos")
 def obtener_formatos():
